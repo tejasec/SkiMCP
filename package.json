@@ -2,7 +2,7 @@
   "name": "scourmcp",
   "version": "0.1.0",
   "private": true,
-  "description": "MCP Tool Manifest Risk Scanner — scan MCP server tool definitions for security risks",
+  "description": "ScourMCP — scan MCP server tool definitions for security risks",
   "workspaces": [
     "backend",
     "frontend"

@@ -1,6 +1,6 @@
-# MCP Tool Manifest Risk Scanner
+# ScourMCP
 
-Scan MCP (Model Context Protocol) server tool manifests for security risks. Paste or upload a `tools/list` JSON response and get instant findings with severity scores, evidence, and remediation steps.
+ScourMCP scans MCP (Model Context Protocol) server tool manifests for security risks. Paste or upload a `tools/list` JSON response and get instant findings with severity scores, evidence, and remediation steps.
 
 ## Quick Start
 
@@ -35,10 +35,10 @@ npm run dev
 ## Docker
 
 ```bash
-docker build -t mcp-scanner .
-docker run --rm -p 8080:8080 mcp-scanner
+docker build -t scourmcp .
+docker run --rm -p 8080:8080 scourmcp
 ```
 
 ## Architecture
 
-See [BLUEPRINT.md](BLUEPRINT.md) for module boundaries, API contracts, and architectural decisions.
+See [BLUEPRINT.md](BLUEPRINT.md) for module boundaries, API contracts, and architectural decisions, and [STARTUP.md](STARTUP.md) for running ScourMCP on a PC or on Android with Termux.
