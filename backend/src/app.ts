@@ -31,7 +31,7 @@ app.get('*', (req, res) => {
   res
     .status(404)
     .send(
-      'MCP Manifest Scanner backend is running. Frontend build not found yet.',
+      'ScourMCP backend is running. Frontend build not found yet.',
     );
 });
 

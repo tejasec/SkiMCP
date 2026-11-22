@@ -48,7 +48,7 @@ export default function App() {
     <main className="shell">
       <header className="hero">
         <div className="eyebrow">
-          <span className="shield">🛡️</span> MCP Manifest Scanner
+          <span className="shield">🛡️</span> ScourMCP
         </div>
         <h1>Scan MCP Tool Manifests for Security Risks</h1>
         <p>
