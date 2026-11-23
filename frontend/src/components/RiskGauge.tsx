@@ -7,7 +7,7 @@ const RISK_COLORS: Record<string, string> = {
   critical: '#ef4444',
   high: '#f97316',
   medium: '#eab308',
-  low: '#22c55e',
+  low: '#16a34a',
 };
 
 export default function RiskGauge({ score, risk }: RiskGaugeProps) {
@@ -24,7 +24,7 @@ export default function RiskGauge({ score, risk }: RiskGaugeProps) {
         <path
           d="M 10 70 A 60 60 0 0 1 130 70"
           fill="none"
-          stroke="#2a2a3e"
+          stroke="var(--border-strong, #B1ADA1)"
           strokeWidth="10"
           strokeLinecap="round"
         />
