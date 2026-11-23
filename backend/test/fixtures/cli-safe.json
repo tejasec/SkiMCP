@@ -1,0 +1,1 @@
+{"tools":[{"name":"get_time","description":"Get UTC time","inputSchema":{"type":"object"}}]}
