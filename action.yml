@@ -1,6 +1,6 @@
-name: 'MCP Manifest Risk Scanner'
+name: 'SkiMCP Manifest Risk Scanner'
 description: 'Audit MCP tool manifests and configurations for security risks, shell execution, prompt injection, and permission drift.'
-author: 'scourmcp'
+author: 'SkiMCP'
 branding:
   icon: 'shield'
   color: 'blue'

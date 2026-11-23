@@ -1,8 +1,8 @@
 {
-  "name": "scourmcp",
+  "name": "skimcp",
   "version": "0.1.0",
   "private": true,
-  "description": "ScourMCP — scan MCP server tool definitions for security risks",
+  "description": "SkiMCP — MCP Tool Manifest Risk Scanner: scan MCP server tool definitions for security risks",
   "workspaces": [
     "backend",
     "frontend"

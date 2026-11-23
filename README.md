@@ -1,4 +1,4 @@
-# ScourMCP
+# SkiMCP — MCP Tool Manifest Risk Scanner
 
 [![CI Tests](https://img.shields.io/badge/tests-55%20passed-brightgreen)]()
 [![Typecheck](https://img.shields.io/badge/typescript-strict-blue)]()
@@ -23,19 +23,19 @@ PORT=8080 npm start
 Run security scans directly from your terminal:
 ```bash
 # Scan a manifest file (fails build if high or critical risks are found)
-npx scourmcp scan ./claude_desktop_config.json --fail-on=high
+npx skimcp scan ./claude_desktop_config.json --fail-on=high
 
 # Compare baseline (v1) against PR (v2) for permission drift
-npx scourmcp diff ./manifest-v1.json ./manifest-v2.json
+npx skimcp diff ./manifest-v1.json ./manifest-v2.json
 
 # Automatically generate a hardened, sanitized manifest
-npx scourmcp harden ./risky-manifest.json --output ./hardened.json
+npx skimcp harden ./risky-manifest.json --output ./hardened.json
 ```
 
 ### Docker
 ```bash
-docker build -t scourmcp .
-docker run --rm -p 8080:8080 scourmcp
+docker build -t skimcp .
+docker run --rm -p 8080:8080 skimcp
 ```
 
 ---

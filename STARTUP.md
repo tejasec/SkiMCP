@@ -1,6 +1,6 @@
 # Project Startup Guide: PC & Android (Termux)
 
-This guide covers running the **ScourMCP** on your desktop/laptop (Linux, macOS, Windows) and running it directly on an Android device using **Termux**.
+This guide covers running **SkiMCP** (MCP Tool Manifest Risk Scanner) on your desktop/laptop (Linux, macOS, Windows) and running it directly on an Android device using **Termux**.
 
 ---
 
@@ -13,7 +13,7 @@ This guide covers running the **ScourMCP** on your desktop/laptop (Linux, macOS,
 
 Navigate to the project root:
 ```bash
-cd "ScourMCP/scourmcp"
+cd "MCP Tool Manifest Risk Scanner/skimcp"
 ```
 
 ---
@@ -57,10 +57,10 @@ npm run dev
 ### Option C: Docker Container
 ```bash
 # 1. Build the multi-stage image
-docker build -t scourmcp .
+docker build -t skimcp .
 
 # 2. Run the container
-docker run --rm -p 8080:8080 scourmcp
+docker run --rm -p 8080:8080 skimcp
 
 # 3. Open http://localhost:8080
 ```
@@ -109,7 +109,7 @@ You can run both the Node.js backend and the web scanner natively inside Android
 ### Step 2: Transfer or Clone the Project to Termux
 
 #### Method 1: Copy from Phone Internal Storage
-If you copied the `scourmcp` folder to your phone's internal storage (e.g. Download folder):
+If you copied the `skimcp` folder to your phone's internal storage (e.g. Download folder):
 1. Grant Termux storage access:
    ```bash
    termux-setup-storage
@@ -117,21 +117,21 @@ If you copied the `scourmcp` folder to your phone's internal storage (e.g. Downl
    *(Accept the Android permission prompt)*
 2. Copy the folder to your Termux home directory:
    ```bash
-   cp -r ~/storage/shared/Download/scourmcp ~/
-   cd ~/scourmcp
+   cp -r ~/storage/shared/Download/skimcp ~/
+   cd ~/skimcp
    ```
 
 #### Method 2: Git Clone
 If pushed to GitHub or GitLab:
 ```bash
 git clone <YOUR_REPO_URL>
-cd scourmcp
+cd skimcp
 ```
 
 ---
 
 ### Step 3: Install Dependencies & Build in Termux
-Inside the `scourmcp` folder in Termux:
+Inside the `skimcp` folder in Termux:
 
 1. **Install dependencies**:
    ```bash
@@ -158,7 +158,7 @@ PORT=8080 npm start
 
 You should see:
 ```text
-ScourMCP listening on http://localhost:8080
+MCP Manifest Scanner listening on http://localhost:8080
 ```
 
 ---

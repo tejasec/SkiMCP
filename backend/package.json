@@ -1,10 +1,10 @@
 {
-  "name": "@scourmcp/backend",
+  "name": "@skimcp/backend",
   "version": "0.1.0",
   "private": true,
   "main": "dist/server.js",
   "bin": {
-    "scourmcp": "dist/cli.js"
+    "skimcp": "dist/cli.js"
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",

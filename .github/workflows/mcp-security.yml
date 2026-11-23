@@ -28,14 +28,14 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install ScourMCP
-        run: npm install -g @scourmcp/backend
+      - name: Install SkiMCP
+        run: npm install -g @skimcp/backend
 
       - name: Audit Manifests with Security Gate
         run: |
           echo "🔍 Scanning MCP tool definitions for shell execution, prompt injection, and over-permissions..."
           # Scan config and fail the check if any HIGH or CRITICAL severity findings are detected
-          npx scourmcp scan ./claude_desktop_config.json --fail-on=high --format=table
+          npx skimcp scan ./claude_desktop_config.json --fail-on=high --format=table
 
       - name: Compare Baseline vs PR for Permission Escalations
         if: github.event_name == 'pull_request'
@@ -44,5 +44,5 @@ jobs:
           git show origin/${{ github.base_ref }}:./claude_desktop_config.json > /tmp/base_manifest.json || true
           if [ -f /tmp/base_manifest.json ]; then
             echo "🔀 Running Permission Diff against baseline..."
-            npx scourmcp diff /tmp/base_manifest.json ./claude_desktop_config.json
+            npx skimcp diff /tmp/base_manifest.json ./claude_desktop_config.json
           fi

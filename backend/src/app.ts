@@ -31,7 +31,7 @@ app.get('*', (req, res) => {
   res
     .status(404)
     .send(
-      'ScourMCP backend is running. Frontend build not found yet.',
+      'SkiMCP backend is running. Frontend build not found yet.',
     );
 });
 

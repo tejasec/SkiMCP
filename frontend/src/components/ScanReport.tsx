@@ -220,7 +220,7 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
       fingerprint: report.manifestFingerprint,
     };
     const b64 = btoa(JSON.stringify(payload));
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://scourmcp.example.com';
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://skimcp.example.com';
     return `<iframe src="${origin}/embed?data=${encodeURIComponent(b64)}" width="380" height="135" frameborder="0"></iframe>`;
   }, [report]);
 

@@ -30,11 +30,11 @@ const SEVERITY_WEIGHTS: Record<Severity, number> = {
 
 function printHelp() {
   console.log(`
-${c.bold}${c.cyan}ScourMCP CLI${c.reset}
+${c.bold}${c.cyan}SkiMCP CLI${c.reset}
 ${c.dim}Deterministic, rule-based security auditing for MCP servers${c.reset}
 
 ${c.bold}USAGE:${c.reset}
-  scourmcp <command> [options]
+  skimcp <command> [options]
 
 ${c.bold}COMMANDS:${c.reset}
   ${c.green}scan <path-or-url>${c.reset}       Audit an MCP manifest (JSON, YAML, JSONL, Claude config)
@@ -51,13 +51,13 @@ ${c.bold}OPTIONS:${c.reset}
 
 ${c.bold}EXAMPLES:${c.reset}
   ${c.dim}# Scan a local Claude Desktop configuration and break CI on high or critical findings:${c.reset}
-  scourmcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high
+  skimcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high
 
   ${c.dim}# Compare baseline version against PR version for permission escalation:${c.reset}
-  scourmcp diff ./manifest-v1.json ./manifest-v2.json
+  skimcp diff ./manifest-v1.json ./manifest-v2.json
 
   ${c.dim}# Automatically generate a hardened, sanitized manifest:${c.reset}
-  scourmcp harden ./manifest.json --output ./manifest-hardened.json
+  skimcp harden ./manifest.json --output ./manifest-hardened.json
 `);
 }
 
@@ -85,7 +85,7 @@ function renderAsciiGauge(score: number): string {
 
 async function readFileOrFetch(target: string): Promise<string> {
   if (target.startsWith('http://') || target.startsWith('https://')) {
-    const res = await fetch(target, { headers: { 'User-Agent': 'scourmcp-cli' } });
+    const res = await fetch(target, { headers: { 'User-Agent': 'skimcp-cli' } });
     if (!res.ok) throw new Error(`HTTP fetch failed with status ${res.status}`);
     return await res.text();
   }
@@ -112,7 +112,7 @@ export async function runCli(args: string[]): Promise<number> {
   const includePrompts = args.includes('--include-prompts');
 
   if (command === 'version' || args.includes('-v') || args.includes('--version')) {
-    console.log('scourmcp v0.1.0');
+    console.log('SkiMCP v0.1.0');
     return 0;
   }
 
@@ -151,7 +151,7 @@ export async function runCli(args: string[]): Promise<number> {
       else console.log(md);
     } else {
       // Table formatting
-      console.log(`\n${c.bold}🛡️  ScourMCP Risk Audit${c.reset}`);
+      console.log(`\n${c.bold}🛡️  MCP Tool Manifest Risk Audit${c.reset}`);
       console.log(`${c.dim}Target:${c.reset} ${target}`);
       console.log(`${c.dim}SHA-256:${c.reset} ${report.manifestFingerprint}`);
       console.log(`${c.bold}Risk Score:${c.reset} ${renderAsciiGauge(report.summary.riskScore)}`);
@@ -284,7 +284,7 @@ export async function runCli(args: string[]): Promise<number> {
   return 2;
 }
 
-if (process.argv[1] && process.argv[1].endsWith('cli.ts') || process.argv[1]?.endsWith('cli.js') || process.argv[1]?.endsWith('scourmcp')) {
+if (process.argv[1] && process.argv[1].endsWith('cli.ts') || process.argv[1]?.endsWith('cli.js') || process.argv[1]?.endsWith('skimcp')) {
   runCli(process.argv.slice(2)).then((code) => {
     process.exit(code);
   });

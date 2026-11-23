@@ -43,7 +43,7 @@ export function generateMarkdownReport(report: ScanReport): string {
 
   const lines: string[] = [];
 
-  lines.push('# ScourMCP Security Audit Report');
+  lines.push('# SkiMCP Security Audit Report');
   lines.push('');
   lines.push(`**Scanned At:** \`${scannedAt}\`  `);
   lines.push(`**Overall Risk:** **${summary.overallRisk.toUpperCase()}** (Score: ${summary.riskScore}/100)  `);
@@ -163,7 +163,7 @@ export function generateMarkdownReport(report: ScanReport): string {
   lines.push(badge.markdown);
   lines.push('```');
   lines.push('');
-  lines.push('*Report generated deterministically by ScourMCP.*');
+  lines.push('*Report generated deterministically by SkiMCP.*');
 
   return lines.join('\n');
 }

@@ -29,13 +29,13 @@ export default function App() {
   }
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const saved = localStorage.getItem('scourmcp-theme');
+    const saved = localStorage.getItem('skimcp-theme');
     return saved === 'dark' ? 'dark' : 'light';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('scourmcp-theme', theme);
+    localStorage.setItem('skimcp-theme', theme);
   }, [theme]);
 
   const [activeView, setActiveView] = useState<ActiveView>('scanner');

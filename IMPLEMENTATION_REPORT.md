@@ -1,15 +1,15 @@
-# Implementation Report: ScourMCP
+# Implementation Report: SkiMCP — MCP Tool Manifest Risk Scanner
 
 ## 1. Executive Summary & System Purpose
 
-The **ScourMCP** is an enterprise-grade, deterministic, rule-based security auditing and drift-detection engine designed specifically for the Model Context Protocol (MCP) ecosystem. 
+The **MCP Tool Manifest Risk Scanner** is an enterprise-grade, deterministic, rule-based security auditing and drift-detection engine designed specifically for the Model Context Protocol (MCP) ecosystem. 
 
 In agentic AI architectures (such as Claude Desktop, Cursor, and autonomous agent frameworks), MCP servers expose tool definitions, external resources, and prompt templates that LLMs consume to interact with the physical world. While this architecture provides unprecedented extensibility, it introduces severe, unregulated attack vectors:
 - **Prompt Injection & Tool Poisoning**: Malicious actors embed hidden instruction overrides or zero-width Unicode steganography in tool descriptions to hijack LLM system prompts and alter tool call parameters.
 - **Excessive Agency & Shell Escapes**: Over-permissioned tools declare broad shell commands (`bash -c`, `eval`) or unrestricted filesystem access (`/`, `~/.ssh`), allowing arbitrary code execution.
 - **Silent Upstream Capability Drift ("Rug-Pulls")**: A previously audited MCP server can silently alter its schema downstream, adding dangerous parameter flags or relaxing constraint boundaries without notifying the host agent.
 
-The **ScourMCP** addresses these risks with a static, deterministic security review engine that requires **no external database**, **no authentication**, and **no runtime LLM invocations**. It runs anywhere—from developer terminals and GitHub Actions CI pipelines to serverless Google Cloud Run containers and offline Android Termux environments.
+The **MCP Tool Manifest Risk Scanner** addresses these risks with a static, deterministic security review engine that requires **no external database**, **no authentication**, and **no runtime LLM invocations**. It runs anywhere—from developer terminals and GitHub Actions CI pipelines to serverless Google Cloud Run containers and offline Android Termux environments.
 
 ---
 
@@ -56,13 +56,13 @@ An integrated catalog of 16 pre-audited MCP servers across 6 core categories (`S
 Developers can audit manifests directly in their terminal workflows, pre-commit hooks, or CI/CD pipelines without launching the web server:
 ```bash
 # Scan a local manifest and fail CI if high or critical risks are present:
-scourmcp scan ./claude_desktop_config.json --fail-on=high
+skimcp scan ./claude_desktop_config.json --fail-on=high
 
 # Compare two versions for permission drift:
-scourmcp diff ./manifest-v1.json ./manifest-v2.json
+skimcp diff ./manifest-v1.json ./manifest-v2.json
 
 # Automatically generate a hardened manifest:
-scourmcp harden ./manifest.json --output ./manifest-hardened.json
+skimcp harden ./manifest.json --output ./manifest-hardened.json
 ```
 
 ### 2.7. Community Blocklist & Advisory Feed (F-11)
@@ -78,7 +78,7 @@ A dedicated, standalone risk profile visualization grouping findings into 7 intu
 
 ### 2.9. Browser-Local Scan History & Comparison (F-12)
 Provides session persistence without requiring an external database:
-- **`localStorage` Retention**: Automatically archives up to 50 recent scans locally (`mcp_scanner_scan_history_v1`).
+- **`localStorage` Retention**: Automatically archives up to 50 recent scans locally (`skimcp_scan_history_v1`).
 - **History Management**: 1-click "Load into Scanner", selective multi-scan comparison ("Compare Selected") feeding directly into the Permission Diff engine, per-row deletion, and complete JSON export.
 
 ### 2.10. Embeddable Scan Widget & URL-Encoded Payloads (F-13)
@@ -109,7 +109,7 @@ The following diagram illustrates the complete end-to-end data flow through the 
 │                                         USER INTERFACES                                         │
 ├───────────────────────────────────────────────┬─────────────────────────────────────────────────┤
 │            Web Dashboard (React SPA)          │               Terminal CLI Runner               │
-│  [Manifest Input]   [Diff Tab]   [Directory]  │   scourmcp scan | diff | harden             │
+│  [Manifest Input]   [Diff Tab]   [Directory]  │   skimcp scan | diff | harden                  │
 └───────────────────────┬───────────────────────┴────────────────────────┬────────────────────────┘
                         │                                                │
                         ▼                                                ▼
@@ -281,23 +281,23 @@ curl -X POST http://localhost:8080/api/scan-url \
 The scanner includes a standalone CLI binary:
 ```bash
 # Display help and available commands
-scourmcp --help
+skimcp --help
 
 # Scan a local manifest file (JSON, YAML, JSONL, or Claude Desktop config)
-scourmcp scan ./claude_desktop_config.json
+skimcp scan ./claude_desktop_config.json
 
 # Enforce CI policy: fail with exit code 1 if findings reach 'high' or 'critical'
-scourmcp scan ./claude_desktop_config.json --fail-on=high
+skimcp scan ./claude_desktop_config.json --fail-on=high
 
 # Output in JSON or Markdown format
-scourmcp scan ./manifest.json --format=json --output=report.json
-scourmcp scan ./manifest.json --format=markdown --output=REPORT.md
+skimcp scan ./manifest.json --format=json --output=report.json
+skimcp scan ./manifest.json --format=markdown --output=REPORT.md
 
 # Compare two manifest versions for permission drift
-scourmcp diff ./manifest-v1.json ./manifest-v2.json
+skimcp diff ./manifest-v1.json ./manifest-v2.json
 
 # Automatically generate a hardened manifest file
-scourmcp harden ./risky-manifest.json --output ./hardened-manifest.json
+skimcp harden ./risky-manifest.json --output ./hardened-manifest.json
 ```
 
 ---
@@ -465,9 +465,9 @@ $ npm run typecheck
 ```
 **Output:**
 ```
-npm notice run @scourmcp/backend@0.1.0 typecheck
+npm notice run @skimcp/backend@0.1.0 typecheck
 npm notice run tsc --noEmit
-npm notice run @scourmcp/frontend@0.1.0 typecheck
+npm notice run @skimcp/frontend@0.1.0 typecheck
 npm notice run tsc --noEmit
 ```
 **Result**: Exit code 0, 0 type errors across backend and frontend workspaces.
@@ -487,7 +487,7 @@ dist/index.html                   0.41 kB │ gzip:  0.27 kB
 dist/assets/index-_Ef_Ethk.css   27.40 kB │ gzip:  5.20 kB
 dist/assets/index-BbqkcATn.js   210.43 kB │ gzip: 63.68 kB
 ✓ built in 1.09s
-npm notice run @scourmcp/backend@0.1.0 build
+npm notice run @skimcp/backend@0.1.0 build
 npm notice run tsc -p tsconfig.json && chmod +x dist/cli.js
 ```
 **Result**: Exit code 0, all production bundles compiled successfully.

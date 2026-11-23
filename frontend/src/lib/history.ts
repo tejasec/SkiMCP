@@ -14,7 +14,7 @@ export interface ScanHistoryEntry {
   rawManifest: string;
 }
 
-const STORAGE_KEY = 'mcp_scanner_scan_history_v1';
+const STORAGE_KEY = 'skimcp_scan_history_v1';
 const MAX_HISTORY_ITEMS = 50;
 
 /**
@@ -95,7 +95,7 @@ export function exportScanHistory(): void {
   const history = getScanHistory();
   const jsonStr = JSON.stringify(history, null, 2);
   downloadFile(
-    `scourmcp-history-${new Date().toISOString().split('T')[0]}.json`,
+    `skimcp-history-${new Date().toISOString().split('T')[0]}.json`,
     jsonStr,
     'application/json;charset=utf-8',
   );

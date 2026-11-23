@@ -1,4 +1,4 @@
-# BLUEPRINT — ScourMCP
+# BLUEPRINT — SkiMCP (MCP Tool Manifest Risk Scanner)
 
 Short, hackathon-practical contract.
 
@@ -31,7 +31,7 @@ Private helpers use `_` prefix and must not be imported across modules.
 
 Response `200`:
 ```json
-{ "ok": true, "service": "scourmcp", "timestamp": "..." }
+{ "ok": true, "service": "mcp-manifest-scanner", "timestamp": "..." }
 ```
 
 ### `POST /api/scan`
@@ -96,16 +96,16 @@ That's it.
   ```
 - **Docker container:**
   ```bash
-  docker build -t scourmcp .
-  docker run --rm -p 8080:8080 scourmcp
+  docker build -t skimcp .
+  docker run --rm -p 8080:8080 skimcp
   ```
 - **Phone access via local Wi-Fi:** Run `PORT=8080 npm start` on PC, then navigate to `http://<PC_LOCAL_IP>:8080` in phone browser.
 
 ### Android Termux Execution
 Runs natively inside Android using Termux:
 1. `pkg update && pkg install nodejs-lts git -y`
-2. Clone repo or copy folder (`termux-setup-storage` -> `cp -r ~/storage/shared/Download/scourmcp ~/`)
-3. `cd scourmcp && npm install && npm run build`
+2. Clone repo or copy folder (`termux-setup-storage` -> `cp -r ~/storage/shared/Download/skimcp ~/`)
+3. `cd skimcp && npm install && npm run build`
 4. `PORT=8080 npm start`
 5. Open phone browser to `http://localhost:8080`
 

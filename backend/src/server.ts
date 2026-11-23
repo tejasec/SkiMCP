@@ -3,6 +3,6 @@ import { env } from './config/env';
 
 app.listen(env.port, () => {
   console.log(
-    `ScourMCP listening on http://localhost:${env.port}`,
+    `SkiMCP listening on http://localhost:${env.port}`,
   );
 });

@@ -228,10 +228,10 @@ export const HERO_TOKENS: HeroToken[] = [
     category: 'Execution Safety',
     glyph: '$ ',
     peekDescription: 'Flags tools executing arbitrary host commands via binaries like bash, sh, eval, or exec.',
-    peekArtifact: 'scourmcp scan <manifest> --fail-on=critical',
+    peekArtifact: 'skimcp scan <manifest> --fail-on=critical',
     fullDescription:
       'Audits tool manifests for arbitrary bash/sh execution, subprocess spawning, and unconstrained command arguments without parameter allowlists or OS sandboxing.',
-    cliCommand: 'scourmcp scan ./claude_desktop_config.json --fail-on=critical',
+    cliCommand: 'skimcp scan ./claude_desktop_config.json --fail-on=critical',
     codeSnippet: PRESET_SHELL_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#shell-execution',
@@ -249,7 +249,7 @@ export const HERO_TOKENS: HeroToken[] = [
     peekArtifact: 'Rule: credential-access (Critical / High)',
     fullDescription:
       'Detects patterns targeting sensitive credentials such as id_rsa, .env files, bearer tokens, OAuth secrets, and authorization parameters in tool descriptions and input schemas.',
-    cliCommand: 'scourmcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high',
+    cliCommand: 'skimcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high',
     codeSnippet: PRESET_CREDENTIAL_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#credential-access',
@@ -267,7 +267,7 @@ export const HERO_TOKENS: HeroToken[] = [
     peekArtifact: '--include-prompts (AST audit)',
     fullDescription:
       'Identifies covert prompt injection attacks embedded inside tool descriptions, prompt templates, and resource payloads (e.g. <IMPORTANT>, <SYSTEM>, delimiter hijacking, or ignore previous instructions).',
-    cliCommand: 'scourmcp scan ./manifest.json --include-prompts --fail-on=critical',
+    cliCommand: 'skimcp scan ./manifest.json --include-prompts --fail-on=critical',
     codeSnippet: PRESET_CREDENTIAL_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#prompt-injection',
@@ -285,7 +285,7 @@ export const HERO_TOKENS: HeroToken[] = [
     peekArtifact: 'Targets: ls, cat, curl, eval, final_answer, computer_use',
     fullDescription:
       'Detects malicious or misleading tools designed to override standard OS utilities (ls, curl, rm, eval) or LLM orchestrator reserved control functions (final_answer, computer_use, browser).',
-    cliCommand: 'scourmcp scan ./manifest.json --fail-on=high',
+    cliCommand: 'skimcp scan ./manifest.json --fail-on=high',
     codeSnippet: PRESET_SHADOW_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#tool-shadowing',
@@ -300,10 +300,10 @@ export const HERO_TOKENS: HeroToken[] = [
     category: 'Prompt Integrity',
     glyph: '░ ░',
     peekDescription: 'Reveals zero-width Unicode steganography, BiDi overrides, and concealed Base64 payloads.',
-    peekArtifact: 'scourmcp harden <path> --output hardened.json',
+    peekArtifact: 'skimcp harden <path> --output hardened.json',
     fullDescription:
       'Identifies steganographic injection mechanisms invisible to human reviewers, including zero-width spaces (U+200B–U+200F, U+FEFF), BiDi Trojan Source overrides (U+202A–U+202E), and hidden Base64 payloads.',
-    cliCommand: 'scourmcp harden ./manifest.json --output ./hardened.json',
+    cliCommand: 'skimcp harden ./manifest.json --output ./hardened.json',
     codeSnippet: PRESET_CREDENTIAL_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#obfuscation-detected',
@@ -318,10 +318,10 @@ export const HERO_TOKENS: HeroToken[] = [
     category: 'Format Ingestion',
     glyph: '{ }',
     peekDescription: 'Standard RFC 8259 MCP specification: { "tools": [...] } or raw tool arrays.',
-    peekArtifact: 'scourmcp scan manifest.json --format=table',
+    peekArtifact: 'skimcp scan manifest.json --format=table',
     fullDescription:
       'Ingests official MCP JSON specifications including tools/list payloads ({ tools: [...] }), top-level tool arrays ([...]), and JSON-RPC 2.0 response objects ({ result: { tools: [...] } }).',
-    cliCommand: 'scourmcp scan ./server-manifest.json --format=table',
+    cliCommand: 'skimcp scan ./server-manifest.json --format=table',
     codeSnippet: PRESET_JSON_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#1-multi-source-manifest-ingestion',
@@ -336,10 +336,10 @@ export const HERO_TOKENS: HeroToken[] = [
     category: 'Format Ingestion',
     glyph: ':',
     peekDescription: 'Parses multi-line .yaml/.yml manifests without requiring bracket delimiters.',
-    peekArtifact: 'scourmcp scan ./manifest.yaml',
+    peekArtifact: 'skimcp scan ./manifest.yaml',
     fullDescription:
       'Parses human-readable YAML tool schemas and server definitions, automatically normalizing YAML sequences and dictionaries into standardized MCP tool ASTs.',
-    cliCommand: 'scourmcp scan ./manifest.yaml',
+    cliCommand: 'skimcp scan ./manifest.yaml',
     codeSnippet: PRESET_YAML_PAYLOAD,
     snippetLanguage: 'yaml',
     docsUrl: '#1-multi-source-manifest-ingestion',
@@ -354,10 +354,10 @@ export const HERO_TOKENS: HeroToken[] = [
     category: 'Format Ingestion',
     glyph: '↵',
     peekDescription: 'Ingests streaming newline-delimited JSON tools exported line-by-line.',
-    peekArtifact: 'scourmcp scan ./tools.jsonl',
+    peekArtifact: 'skimcp scan ./tools.jsonl',
     fullDescription:
       'Ingests JSON Lines (.jsonl) documents where each tool is streamed as an independent JSON object on its own line, ideal for log dumps and streaming tool exports.',
-    cliCommand: 'scourmcp scan ./tools.jsonl',
+    cliCommand: 'skimcp scan ./tools.jsonl',
     codeSnippet: PRESET_JSONL_PAYLOAD,
     snippetLanguage: 'jsonl',
     docsUrl: '#1-multi-source-manifest-ingestion',
@@ -375,7 +375,7 @@ export const HERO_TOKENS: HeroToken[] = [
     peekArtifact: 'Path: ~/.config/Claude/claude_desktop_config.json',
     fullDescription:
       'Directly audits Claude Desktop configuration files. Extracts all registered mcpServers, examining executable binaries (npx, docker, bash), CLI arguments, and environment variable credentials.',
-    cliCommand: 'scourmcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high',
+    cliCommand: 'skimcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high',
     codeSnippet: PRESET_CLAUDE_CONFIG_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#claude-desktop-configuration',
@@ -415,10 +415,10 @@ export const HERO_TOKENS: HeroToken[] = [
     category: 'Drift Analysis',
     glyph: '± ',
     peekDescription: 'Compares v1 baseline against v2 target to detect permission escalations and rug-pulls.',
-    peekArtifact: 'scourmcp diff ./manifest-v1.json ./manifest-v2.json',
+    peekArtifact: 'skimcp diff ./manifest-v1.json ./manifest-v2.json',
     fullDescription:
       'Performs AST structural diffing between baseline and PR manifests. Identifies added/removed tools, parameter schema relaxations (e.g. additionalProperties: true), description changes, and computes net Risk Delta score.',
-    cliCommand: 'scourmcp diff ./manifest-v1.json ./manifest-v2.json',
+    cliCommand: 'skimcp diff ./manifest-v1.json ./manifest-v2.json',
     codeSnippet: `// Permission Drift Detection:
 Baseline (v1): additionalProperties: false, read-only SELECT
 Target   (v2): additionalProperties: true, injected prompt tag

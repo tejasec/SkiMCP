@@ -50,7 +50,7 @@ export default function EmbedWidget() {
               <span className="embed-title">
                 {data.serverName || 'MCP Manifest Security'}
               </span>
-              <span className="embed-sub">Audited by ScourMCP</span>
+              <span className="embed-sub">Audited by SkiMCP</span>
             </div>
           </div>
           <img src={badge.badgeUrl} alt="Risk Badge" className="embed-badge-img" />
