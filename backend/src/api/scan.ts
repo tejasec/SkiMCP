@@ -4,20 +4,27 @@ import { scanManifest } from '../scanner';
 export function scanHandler(req: Request, res: Response) {
   const body = req.body;
 
-  if (!body || typeof body !== 'object') {
+  if (!body || (typeof body !== 'object' && typeof body !== 'string')) {
     res.status(400).json({
       error: 'invalid_request',
-      message: 'Request body must be a JSON object.',
+      message: 'Request body must be a JSON object, array, or text manifest.',
     });
     return;
   }
 
-  // Accept { manifest: { tools: [...] } } or { manifest: [...] }
-  // or bare { tools: [...] } or bare [...]
-  const manifest = body.manifest ?? body;
+  // Accept { manifest: ... } or { text: ... } or bare object/string
+  const manifest =
+    typeof body === 'object' && body !== null
+      ? (body.manifest !== undefined ? body.manifest : body.text !== undefined ? body.text : body)
+      : body;
+
+  const options =
+    typeof body === 'object' && body !== null && 'options' in body
+      ? body.options
+      : undefined;
 
   try {
-    const report = scanManifest(manifest);
+    const report = scanManifest(manifest, options);
     res.json(report);
   } catch (err) {
     if (typeof err === 'string') {
