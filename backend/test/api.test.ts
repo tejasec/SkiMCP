@@ -31,7 +31,7 @@ describe('API Endpoints Integration', () => {
       assert.strictEqual(res.status, 200);
       const json = await res.json();
       assert.strictEqual(json.ok, true);
-      assert.strictEqual(json.service, 'mcp-manifest-scanner');
+      assert.strictEqual(json.service, 'scourmcp');
     });
   });
 

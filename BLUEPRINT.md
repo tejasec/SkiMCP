@@ -31,7 +31,7 @@ Private helpers use `_` prefix and must not be imported across modules.
 
 Response `200`:
 ```json
-{ "ok": true, "service": "mcp-manifest-scanner", "timestamp": "..." }
+{ "ok": true, "service": "scourmcp", "timestamp": "..." }
 ```
 
 ### `POST /api/scan`
