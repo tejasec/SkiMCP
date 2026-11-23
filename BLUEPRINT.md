@@ -31,22 +31,33 @@ Private helpers use `_` prefix and must not be imported across modules.
 
 Response `200`:
 ```json
-{ "ok": true, "service": "scourmcp", "timestamp": "..." }
+{ "ok": true, "service": "mcp-manifest-scanner", "timestamp": "..." }
 ```
 
 ### `POST /api/scan`
 
-Request: `{ "manifest": { "tools": [...] } }` or bare `{ "tools": [...] }` or bare `[...]`
+Request: `{ "manifest": { "tools": [...] } }`, bare `{ "tools": [...] }`, bare `[...]`, YAML string, JSON Lines (.jsonl), or Claude Desktop config (`{ "mcpServers": { ... } }`).
+Optional: `{ "options": { "scanResourcesAndPrompts": true } }`.
 
-Response `200`: `{ summary: { totalTools, totalFindings, overallRisk, riskScore }, findings: [...], scannedAt }`
+Response `200`: `{ summary: { totalTools, totalFindings, overallRisk, riskScore, manifestFingerprint }, manifestFingerprint, toolFingerprints, tools, findings: [...], scannedAt }`
 
 Response `400`: `{ error: "invalid_manifest", message: "..." }`
+
+### `POST /api/scan-url`
+
+Request: `{ "url": "https://mcp-server.example.com/sse", "options": { "scanResourcesAndPrompts": true } }`
+
+Response `200`: Returns `ScanReport` matching `POST /api/scan`.
+
+Response `400`: `{ error: "ssrf_blocked" | "fetch_failed" | "invalid_request", message: "..." }`
 
 ## Scanning rules
 
 | Rule | Severity | Detects |
 | --- | --- | --- |
 | `prompt-injection` | Critical | Hidden instructions in descriptions |
+| `obfuscation-detected` | Critical/High | Zero-width chars, BiDi overrides, Base64 payloads |
+| `tool-shadowing` | Critical/High | Impersonation of OS binaries (`ls`, `curl`, `eval`) or LLM control primitives |
 | `shell-execution` | Critical | Arbitrary shell/command execution |
 | `credential-access` | Critical | References to secrets, keys, passwords |
 | `filesystem-broad` | High | Unrestricted file path access |
@@ -54,6 +65,7 @@ Response `400`: `{ error: "invalid_manifest", message: "..." }`
 | `network-egress` | High/Medium | Unrestricted HTTP/URL access |
 | `over-permission` | High/Medium | Broad schemas, missing required fields |
 | `vague-description` | Medium | Missing or minimal tool descriptions |
+| `resource-prompt-injection` | Critical/High | Opt-in inspection of MCP resources & prompt definitions |
 
 ## Scoring
 

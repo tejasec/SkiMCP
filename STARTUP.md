@@ -1,6 +1,6 @@
 # Project Startup Guide: PC & Android (Termux)
 
-This guide covers running **ScourMCP** on your desktop/laptop (Linux, macOS, Windows) and running it directly on an Android device using **Termux**.
+This guide covers running the **ScourMCP** on your desktop/laptop (Linux, macOS, Windows) and running it directly on an Android device using **Termux**.
 
 ---
 
@@ -13,7 +13,7 @@ This guide covers running **ScourMCP** on your desktop/laptop (Linux, macOS, Win
 
 Navigate to the project root:
 ```bash
-cd scourmcp
+cd "ScourMCP/scourmcp"
 ```
 
 ---
