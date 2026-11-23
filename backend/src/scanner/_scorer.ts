@@ -10,6 +10,7 @@ const WEIGHT: Record<Severity, number> = {
 export function _computeScore(
   findings: Finding[],
   totalTools: number,
+  manifestFingerprint: string,
 ): ScanSummary {
   const rawScore = findings.reduce((sum, f) => sum + WEIGHT[f.severity], 0);
   const riskScore = Math.min(100, rawScore);
@@ -25,5 +26,6 @@ export function _computeScore(
     totalFindings: findings.length,
     overallRisk,
     riskScore,
+    manifestFingerprint,
   };
 }

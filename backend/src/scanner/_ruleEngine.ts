@@ -1,17 +1,40 @@
-import type { ManifestTool, Finding, ScanRule } from './types';
-import { allRules } from './_rules';
+import type {
+  ManifestTool,
+  ManifestResource,
+  ManifestPrompt,
+  Finding,
+  ScanOptions,
+} from './types';
+import { allRules, checkResourcePromptInjection } from './_rules';
 
 /**
- * Run every registered rule against every tool and collect findings.
- * Private to the scanner module.
+ * Run registered rules against tools (and optionally resources/prompts) and collect findings.
+ * Attaches tool fingerprints to findings where applicable.
  */
-export function _runAllRules(tools: ManifestTool[]): Finding[] {
+export function _runAllRules(
+  tools: ManifestTool[],
+  resources?: ManifestResource[],
+  prompts?: ManifestPrompt[],
+  options?: ScanOptions,
+): Finding[] {
   const findings: Finding[] = [];
 
   for (const tool of tools) {
     for (const rule of allRules) {
-      findings.push(...rule(tool));
+      const toolFindings = rule(tool);
+      for (const f of toolFindings) {
+        if (!f.toolFingerprint && tool.toolFingerprint) {
+          f.toolFingerprint = tool.toolFingerprint;
+        }
+        findings.push(f);
+      }
     }
+  }
+
+  // Opt-in resource and prompt inspection
+  if (options?.scanResourcesAndPrompts && (resources?.length || prompts?.length)) {
+    const rpFindings = checkResourcePromptInjection(resources ?? [], prompts ?? []);
+    findings.push(...rpFindings);
   }
 
   // Sort: critical first, then high, medium, low
