@@ -1,0 +1,58 @@
+name: 'MCP Manifest Risk Scanner'
+description: 'Audit MCP tool manifests and configurations for security risks, shell execution, prompt injection, and permission drift.'
+author: 'scourmcp'
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  manifest_path:
+    description: 'Path or URL to the MCP manifest or configuration file (e.g. claude_desktop_config.json, mcp.json)'
+    required: true
+    default: 'claude_desktop_config.json'
+  fail_on:
+    description: 'Minimum severity level to trigger exit code 1 (critical, high, medium, low)'
+    required: false
+    default: 'high'
+  format:
+    description: 'Output format (markdown, table, json)'
+    required: false
+    default: 'markdown'
+  include_prompts:
+    description: 'Opt-in to audit resources/list and prompts/list for injection'
+    required: false
+    default: 'false'
+  baseline_path:
+    description: 'Optional baseline manifest path to diff against for permission drift detection'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Run MCP Risk Scan
+      shell: bash
+      run: |
+        CLI_PATH="${{ github.action_path }}/backend/dist/cli.js"
+        if [ ! -f "$CLI_PATH" ]; then
+          CLI_PATH="${{ github.action_path }}/dist/cli.js"
+        fi
+        
+        if [ -n "${{ inputs.baseline_path }}" ]; then
+          echo "::group::Comparing MCP Manifests for Permission Drift"
+          node "$CLI_PATH" diff "${{ inputs.baseline_path }}" "${{ inputs.manifest_path }}"
+          echo "::endgroup::"
+        fi
+
+        echo "::group::Auditing MCP Manifest Risk"
+        ARGS="scan \"${{ inputs.manifest_path }}\" --fail-on=${{ inputs.fail_on }} --format=${{ inputs.format }}"
+        if [ "${{ inputs.include_prompts }}" = "true" ]; then
+          ARGS="$ARGS --include-prompts"
+        fi
+        eval node "$CLI_PATH" $ARGS
+        echo "::endgroup::"
