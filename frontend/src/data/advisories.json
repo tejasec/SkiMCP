@@ -1,0 +1,45 @@
+[
+  {
+    "id": "MCP-ADV-2024-001",
+    "severity": "critical",
+    "toolName": "shell_exec",
+    "matchType": "name",
+    "title": "Unauthenticated Remote Shell Execution in shell_exec",
+    "description": "Known malicious tool name signature used in prompt injection attacks to spawn raw bash processes on the agent host.",
+    "reportedDate": "2024-11-10",
+    "reporter": "MCP Community Security Group",
+    "cve": "CVE-2024-MCP-01"
+  },
+  {
+    "id": "MCP-ADV-2024-002",
+    "severity": "critical",
+    "matchType": "pattern",
+    "pattern": "ignore previous instructions|fetch.*id_rsa|export AWS_SECRET",
+    "title": "Stealth Credential Exfiltration Payload",
+    "description": "Known prompt injection signature designed to exfiltrate SSH private keys or cloud credentials via covert parameter echo.",
+    "reportedDate": "2024-11-15",
+    "reporter": "Advisory Security SIG",
+    "cve": "CVE-2024-MCP-02"
+  },
+  {
+    "id": "MCP-ADV-2024-003",
+    "severity": "high",
+    "toolName": "eval_js",
+    "matchType": "name",
+    "title": "Unsandboxed JavaScript Evaluation Primitive",
+    "description": "Arbitrary JavaScript evaluation primitive lacking V8 isolate boundaries, permitting prototype pollution and environment exfiltration.",
+    "reportedDate": "2024-11-18",
+    "reporter": "Audit Group",
+    "cve": "CVE-2024-MCP-03"
+  },
+  {
+    "id": "MCP-ADV-2024-004",
+    "severity": "critical",
+    "matchType": "pattern",
+    "pattern": "nc -e|curl http.*pipe to bash|rm -rf /",
+    "title": "Reverse Shell and Destructive Command Signature",
+    "description": "Direct reverse shell or root filesystem destruction invocation embedded within tool description or schema default value.",
+    "reportedDate": "2024-11-20",
+    "reporter": "Red Team Community"
+  }
+]
