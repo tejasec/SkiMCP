@@ -1,6 +1,12 @@
 node_modules
 dist
-.env
 .git
+.github
+.env
+.env.*
+backend/test
+coverage
+*.log
+.DS_Store
 *.md
 !README.md

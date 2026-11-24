@@ -38,6 +38,12 @@ docker build -t skimcp .
 docker run --rm -p 8080:8080 skimcp
 ```
 
+### Google Cloud Run
+```bash
+npm run deploy:cloudrun
+```
+See [CLOUD_RUN_DEPLOY.md](CLOUD_RUN_DEPLOY.md) for complete deployment guidance, GitHub Actions CI/CD, and custom domain setup.
+
 ---
 
 ## Architecture
