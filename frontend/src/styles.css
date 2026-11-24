@@ -729,9 +729,61 @@ body {
   .tok-peek-tooltip,
   .tok-popover-card,
   .tok-action-btn,
-  .tok-copy-btn {
+  .tok-copy-btn,
+  .guidance-drawer-body,
+  .guidance-chevron,
+  .client-config-row,
+  .quick-audit-drawer,
+  .dropzone-overlay,
+  .error-banner,
+  .server-card,
+  .btn-primary,
+  .btn-sm,
+  .tab-btn,
+  .view-nav-btn,
+  .filter-chip,
+  .client-category-tab,
+  .btn-sample-chip,
+  .btn-copy-path-compact {
     animation: none !important;
     transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ── Shared UI Micro-Animation Keyframes ─────────────────────────── */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtlePop {
+  0% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -848,6 +900,7 @@ body {
   font-size: 0.9rem;
   font-weight: 600;
   pointer-events: none;
+  animation: fadeIn 0.14s ease-out;
 }
 
 .manifest-textarea {
@@ -902,6 +955,10 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
 .btn-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -915,12 +972,17 @@ body {
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-dim);
-  transition: all 0.2s;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
 }
 
 .btn-sm:hover {
   color: var(--text);
   border-color: var(--text-dim);
+  transform: translateY(-1px);
+}
+
+.btn-sm:active {
+  transform: scale(0.97);
 }
 
 .btn-outline {
@@ -957,6 +1019,7 @@ body {
   color: var(--critical);
   font-size: 0.85rem;
   margin-bottom: 1.25rem;
+  animation: slideUpFade 0.18s ease-out;
 }
 
 /* ── Report ──────────────────────────────────────────────────────── */
@@ -1168,6 +1231,10 @@ body {
   color: var(--text);
 }
 
+.tab-btn:active {
+  transform: scale(0.99);
+}
+
 .tab-btn.active {
   background: var(--surface-hover);
   color: var(--accent);
@@ -1233,13 +1300,24 @@ body {
   background: rgba(193, 95, 60, 0.12);
   color: var(--accent);
   border: 1px solid rgba(193, 95, 60, 0.25);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.guidance-chevron {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.guidance-chevron.is-open {
+  transform: rotate(180deg);
 }
 
 .guidance-drawer-body {
   border-top: 1px solid var(--border);
   padding: 0.85rem 1rem 1rem;
   background: var(--bg);
-  animation: fadeIn 0.15s ease-out;
+  animation: fadeIn 0.16s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .guidance-mode-selector {
@@ -1266,6 +1344,11 @@ body {
 .guidance-subtab-btn:hover {
   background: var(--surface-hover);
   color: var(--text);
+  transform: translateY(-1px);
+}
+
+.guidance-subtab-btn:active {
+  transform: scale(0.97);
 }
 
 .guidance-subtab-btn.active {
@@ -1301,6 +1384,11 @@ body {
 .client-category-tab:hover {
   background: var(--surface-hover);
   color: var(--text);
+  transform: translateY(-1px);
+}
+
+.client-category-tab:active {
+  transform: scale(0.97);
 }
 
 .client-category-tab.active {
@@ -1318,6 +1406,7 @@ body {
   background: var(--bg);
   color: var(--text-dim);
   border: 1px solid var(--border);
+  transition: all 0.15s ease;
 }
 
 .client-category-tab.active .client-tab-count {
@@ -1340,6 +1429,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  animation: slideUpFade 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.client-config-row:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 2px 8px rgba(31, 30, 29, 0.05);
 }
 
 .client-row-header {
@@ -1494,6 +1590,17 @@ body {
   background: var(--surface-hover);
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.btn-copy-path-compact:active {
+  transform: scale(0.95);
+}
+
+.btn-copy-path-compact.is-copied {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: var(--low);
+  color: var(--low);
+  animation: subtlePop 0.18s ease-out;
 }
 
 .client-pagination-bar {
@@ -1653,6 +1760,11 @@ body {
   background: var(--surface-hover);
   border-color: var(--accent);
   color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.btn-sample-chip:active {
+  transform: scale(0.97);
 }
 
 .btn-sample-directory {
@@ -2198,6 +2310,7 @@ body {
 .server-card:hover {
   border-color: var(--accent);
   box-shadow: 0 4px 16px rgba(31, 30, 29, 0.08);
+  transform: translateY(-2px);
 }
 
 .server-card.verified {
@@ -2479,6 +2592,7 @@ body {
   border-radius: var(--shape-card);
   padding: 0.75rem 1rem;
   margin-bottom: 0.85rem;
+  animation: slideUpFade 0.16s ease-out;
 }
 
 .drawer-header {

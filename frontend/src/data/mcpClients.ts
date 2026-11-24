@@ -241,11 +241,17 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     priority: 2,
   },
   {
-    id: 'gemini-cli',
-    name: 'Gemini CLI',
+    id: 'antigravity-agy',
+    name: 'Antigravity - agy',
     category: 'cli',
-    globalPath: '~/.gemini/settings.json',
-    projectPath: '.gemini/settings.json',
+    globalPath: [
+      { path: '~/.gemini/antigravity/mcp_config.json' },
+      { label: 'settings', path: '~/.gemini/settings.json' },
+    ],
+    projectPath: [
+      { path: '.agents/mcp_config.json' },
+      { label: 'alt', path: '.gemini/settings.json' },
+    ],
     format: 'JSON',
     rootKey: 'mcpServers',
     priority: 3,

@@ -35,7 +35,9 @@ describe('MCP Clients Config Registry & Progressive Pagination', () => {
     const cli = getClientsForTab('cli');
     assert.equal(cli[0].name, 'Claude Code');
     assert.equal(cli[1].name, 'OpenAI Codex');
+    assert.equal(cli[2].name, 'Antigravity - agy');
     assert.equal(cli[11].name, 'Hermes');
+    assert.ok(!cli.some((c) => c.id === 'gemini-cli'), 'Gemini CLI should be replaced');
   });
 
   it('normalizes both single string paths and OS-specific path arrays', () => {

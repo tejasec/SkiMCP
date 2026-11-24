@@ -102,7 +102,9 @@ export default function InputGuidanceDrawer({
           <span className="guidance-badge">
             {isOpen ? 'Hide Guide' : 'View Guide'}
           </span>
-          <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} size={15} />
+          <span className={`guidance-chevron ${isOpen ? 'is-open' : ''}`}>
+            <Icon name="chevron-down" size={15} />
+          </span>
         </span>
       </button>
 
@@ -196,7 +198,7 @@ export default function InputGuidanceDrawer({
                                     {entry.copyable && (
                                       <button
                                         type="button"
-                                        className="btn-copy-path-compact"
+                                        className={`btn-copy-path-compact ${copiedKey === copyId ? 'is-copied' : ''}`}
                                         onClick={() => handleCopy(entry.path, copyId)}
                                         title={`Copy ${entry.path}`}
                                         aria-label={`Copy global config path for ${client.name}`}
@@ -235,7 +237,7 @@ export default function InputGuidanceDrawer({
                                       {entry.copyable && (
                                         <button
                                           type="button"
-                                          className="btn-copy-path-compact"
+                                          className={`btn-copy-path-compact ${copiedKey === copyId ? 'is-copied' : ''}`}
                                           onClick={() => handleCopy(entry.path, copyId)}
                                           title={`Copy ${entry.path}`}
                                           aria-label={`Copy project config path for ${client.name}`}
