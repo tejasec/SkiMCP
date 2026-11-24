@@ -1274,16 +1274,21 @@ body {
   border-color: var(--accent);
 }
 
-.guidance-platform-chips {
+/* ── MCP Client Category Tabs & Registry Cards ────────────────────── */
+
+.client-category-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
   margin-bottom: 0.75rem;
 }
 
-.guidance-chip-btn {
-  padding: 0.3rem 0.6rem;
-  font-size: 0.76rem;
+.client-category-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
   font-weight: 500;
   border-radius: var(--shape-chip);
   border: 1px solid var(--border);
@@ -1293,60 +1298,187 @@ body {
   transition: all 0.15s ease;
 }
 
-.guidance-chip-btn:hover {
+.client-category-tab:hover {
   background: var(--surface-hover);
   color: var(--text);
 }
 
-.guidance-chip-btn.active {
+.client-category-tab.active {
   background: rgba(193, 95, 60, 0.12);
   border-color: var(--accent);
   color: var(--accent);
   font-weight: 600;
 }
 
-.guidance-detail-card {
+.client-tab-count {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 0.05rem 0.38rem;
+  border-radius: var(--shape-chip);
+  background: var(--bg);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+
+.client-category-tab.active .client-tab-count {
+  background: var(--surface);
+  color: var(--accent);
+  border-color: rgba(193, 95, 60, 0.35);
+}
+
+.client-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.client-config-row {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--shape-control);
-  padding: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-.guidance-field-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.35rem;
-}
-
-.guidance-path-box {
+.client-row-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--shape-control);
-  padding: 0.45rem 0.65rem;
-  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
 }
 
-.guidance-path-box code {
+.client-row-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.client-row-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.client-format-pill {
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--shape-chip);
+  letter-spacing: 0.03em;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-dim);
+}
+
+.client-format-pill.format-json,
+.client-format-pill.format-json5 {
+  color: var(--accent);
+  border-color: rgba(193, 95, 60, 0.3);
+  background: rgba(193, 95, 60, 0.08);
+}
+
+.client-format-pill.format-toml {
+  color: var(--medium);
+  border-color: rgba(217, 119, 6, 0.3);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.client-format-pill.format-yaml,
+.client-format-pill.format-yamljson {
+  color: var(--low);
+  border-color: rgba(22, 163, 74, 0.3);
+  background: rgba(22, 163, 74, 0.08);
+}
+
+.client-rootkey-badge {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--shape-chip);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.client-paths-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.client-path-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.client-path-scope {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  min-width: 50px;
+  padding-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.client-scope-project {
+  color: var(--accent);
+}
+
+.client-path-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.client-path-line {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-chip);
+  padding: 0.22rem 0.45rem;
+  min-width: 0;
+}
+
+.client-os-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-chip);
+  padding: 0.05rem 0.35rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.client-path-code {
+  font-family: var(--mono);
+  font-size: 0.75rem;
   color: var(--text);
   overflow-x: auto;
   white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
-.btn-copy-path {
+.btn-copy-path-compact {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.55rem;
-  font-size: 0.75rem;
+  gap: 0.25rem;
+  padding: 0.15rem 0.42rem;
+  font-size: 0.7rem;
   font-weight: 600;
   border-radius: var(--shape-chip);
   border: 1px solid var(--border);
@@ -1354,73 +1486,43 @@ body {
   color: var(--text);
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.15s ease;
 }
 
-.btn-copy-path:hover {
+.btn-copy-path-compact:hover {
   background: var(--surface-hover);
   border-color: var(--accent);
   color: var(--accent);
 }
 
-.guidance-tip-row {
+.client-pagination-bar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-  font-size: 0.78rem;
+  margin-top: 0.65rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
 }
 
-.guidance-tip-label {
-  color: var(--text-dim);
-  font-weight: 500;
-}
-
-.guidance-cmd-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--shape-chip);
-  padding: 0.15rem 0.45rem;
-}
-
-.guidance-cmd-box code {
-  font-family: var(--mono);
+.client-pagination-status {
   font-size: 0.75rem;
-  color: var(--text);
+  color: var(--text-dim);
+  font-family: var(--mono);
 }
 
-.btn-copy-sm {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--text-dim);
-  padding: 0.1rem;
+.client-pagination-actions {
   display: inline-flex;
   align-items: center;
-}
-
-.btn-copy-sm:hover {
-  color: var(--accent);
-}
-
-.guidance-note {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  margin: 0.4rem 0 0.6rem;
-  line-height: 1.4;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+  gap: 0.45rem;
 }
 
 .guidance-actions-row {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
 }
 
 .guidance-url-guide {
