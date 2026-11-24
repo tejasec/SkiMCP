@@ -4,6 +4,7 @@ import Icon from './Icon';
 interface InputGuidanceDrawerProps {
   onSelectExampleConfig?: (config: string) => void;
   onExploreDirectory?: () => void;
+  curatedCount?: number;
 }
 
 type GuidanceCategory = 'configs' | 'urls';
@@ -53,6 +54,7 @@ const PLATFORM_DETAILS: Record<
 export default function InputGuidanceDrawer({
   onSelectExampleConfig,
   onExploreDirectory,
+  curatedCount = 34,
 }: InputGuidanceDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState<GuidanceCategory>('configs');
@@ -225,7 +227,7 @@ export default function InputGuidanceDrawer({
                     <Icon name="library" size={15} /> Zero-Setup Curated Trust Directory
                   </h4>
                   <p>
-                    Don't have a live server running right now? Browse our directory of 16 pre-audited,
+                    Don't have a live server running right now? Browse our directory of {curatedCount} pre-audited,
                     production MCP servers with instant cryptographic scorecards.
                   </p>
                   {onExploreDirectory && (
@@ -235,7 +237,7 @@ export default function InputGuidanceDrawer({
                       onClick={onExploreDirectory}
                       style={{ marginTop: '0.4rem' }}
                     >
-                      <Icon name="library" size={13} /> Open Curated Directory (16 Servers)
+                      <Icon name="library" size={13} /> Open Curated Directory ({curatedCount} Servers)
                     </button>
                   )}
                 </div>

@@ -247,6 +247,7 @@ interface ManifestInputProps {
   runCanaryProbes?: boolean;
   onRunCanaryProbesChange?: (checked: boolean) => void;
   onExploreDirectory?: () => void;
+  curatedCount?: number;
   onScan: () => void;
   scanning: boolean;
 }
@@ -263,6 +264,7 @@ export default function ManifestInput({
   runCanaryProbes = false,
   onRunCanaryProbesChange,
   onExploreDirectory,
+  curatedCount = 34,
   onScan,
   scanning,
 }: ManifestInputProps) {
@@ -322,6 +324,7 @@ export default function ManifestInput({
           onChange(cfg);
         }}
         onExploreDirectory={onExploreDirectory}
+        curatedCount={curatedCount}
       />
 
       {scanMode === 'manifest' ? (
@@ -443,7 +446,7 @@ export default function ManifestInput({
                 className="btn-sample-chip btn-sample-directory"
                 onClick={onExploreDirectory}
               >
-                <Icon name="library" size={13} /> Curated Directory (16 Servers)
+                <Icon name="library" size={13} /> Curated Directory ({curatedCount} Servers)
               </button>
             )}
           </div>

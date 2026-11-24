@@ -55,7 +55,7 @@ export default function App() {
   const [diffTarget, setDiffTarget] = useState<string | undefined>(undefined);
 
   const totalCuratedServers =
-    (directoryDataRaw as { totalServers?: number }).totalServers || 16;
+    (directoryDataRaw as { totalServers?: number }).totalServers || 34;
 
   // Window-level Scroll Progress Bar (scrollbar.txt)
   useEffect(() => {
@@ -250,6 +250,7 @@ export default function App() {
             runCanaryProbes={runCanaryProbes}
             onRunCanaryProbesChange={setRunCanaryProbes}
             onExploreDirectory={() => setActiveView('directory')}
+            curatedCount={totalCuratedServers}
             onScan={() => handleScan()}
             scanning={scanning}
           />
