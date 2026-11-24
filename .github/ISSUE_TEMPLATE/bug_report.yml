@@ -1,0 +1,54 @@
+name: Bug report
+description: Report a bug or unexpected behavior in SkiMCP
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please do not use public issues for security vulnerabilities; see [SECURITY.md](../SECURITY.md).
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+      placeholder: A clear description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce the issue?
+      placeholder: |
+        1. Run ...
+        2. Scan ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Version, OS, Node.js version, CLI/web/action/Docker, etc.
+      placeholder: |
+        - SkiMCP version/commit:
+        - Node.js:
+        - OS:
+        - Mode: CLI / Web / GitHub Action / Docker
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or manifest sample
+      description: Include relevant logs or a sanitized manifest sample if possible.
+      render: text
+    validations:
+      required: false
