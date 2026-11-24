@@ -38,12 +38,6 @@ docker build -t skimcp .
 docker run --rm -p 8080:8080 skimcp
 ```
 
-### Vercel (Recommended)
-```bash
-npx vercel
-```
-Or import the repository directly in the [Vercel Dashboard](https://vercel.com/new). See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for full deployment instructions, CI/CD, and custom domain setup.
-
 ---
 
 ## Architecture
