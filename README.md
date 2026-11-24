@@ -1,9 +1,9 @@
 # SkiMCP — MCP Tool Manifest Risk Scanner
 
-[![CI Tests](https://img.shields.io/badge/tests-55%20passed-brightgreen)]()
-[![Typecheck](https://img.shields.io/badge/typescript-strict-blue)]()
-[![Architecture](https://img.shields.io/badge/architecture-stateless-purple)]()
-[![License](https://img.shields.io/badge/license-MIT-green)]()
+[![CI](https://github.com/tejasec/SkiMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/tejasec/SkiMCP/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/typescript-strict-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org/)
 
 A deterministic, rule-based security auditing and drift-detection engine for **Model Context Protocol (MCP)** servers. Audit tool manifests for shell execution, credential leaks, covert prompt injection, tool shadowing, and capability expansions.
 
@@ -37,6 +37,32 @@ npx skimcp harden ./risky-manifest.json --output ./hardened.json
 docker build -t skimcp .
 docker run --rm -p 8080:8080 skimcp
 ```
+
+### GitHub Action
+Use SkiMCP in CI to scan MCP manifests and block risky changes:
+
+```yaml
+name: MCP Security Audit
+on:
+  pull_request:
+    paths:
+      - '**/*manifest*.json'
+      - '**/claude_desktop_config.json'
+      - '**/mcp*.json'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: tejasec/SkiMCP@main
+        with:
+          manifest_path: ./claude_desktop_config.json
+          fail_on: high
+          format: markdown
+```
+
+See [`action.yml`](action.yml) for all inputs, including `include_prompts` and `baseline_path` for permission-drift diffs.
 
 ---
 
