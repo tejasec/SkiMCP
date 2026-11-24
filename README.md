@@ -40,8 +40,6 @@ docker run --rm -p 8080:8080 skimcp
 
 ---
 
----
-
 ## Core Capabilities
 
 ### 1. Multi-Source Manifest Ingestion
@@ -109,3 +107,7 @@ npm run build
 ```
 
 ---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
