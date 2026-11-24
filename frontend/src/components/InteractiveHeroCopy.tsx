@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { HERO_TOKENS, type HeroToken } from '../data/heroTokens';
+import Icon from './Icon';
 
 interface InteractiveHeroCopyProps {
   onLoadPreset: (
@@ -280,7 +281,7 @@ export default function InteractiveHeroCopy({
         {renderTokenButton('obfuscation')}. Supports{' '}
         {renderTokenButton('format-json')}, {renderTokenButton('format-yaml')},{' '}
         {renderTokenButton('format-jsonl')},{' '}
-        {renderTokenButton('claude-config')},{' '}
+        {renderTokenButton('desktop-config')},{' '}
         {renderTokenButton('live-sse')}, and{' '}
         {renderTokenButton('permission-diff')}.
       </p>
@@ -356,7 +357,7 @@ export default function InteractiveHeroCopy({
               </span>
               <h3 id="tok-popover-title" className="tok-popover-title">
                 <span className="tok-popover-glyph">
-                  {activePinnedToken.glyph}
+                  <Icon name={activePinnedToken.iconName} size={18} />
                 </span>{' '}
                 {activePinnedToken.label}
               </h3>
@@ -372,7 +373,7 @@ export default function InteractiveHeroCopy({
               aria-label="Close details"
               title="Close (Escape)"
             >
-              ✕
+              <Icon name="close" size={14} />
             </button>
           </div>
 
@@ -392,7 +393,15 @@ export default function InteractiveHeroCopy({
                   onClick={() => handleCopyCli(activePinnedToken.cliCommand)}
                   title="Copy command to clipboard"
                 >
-                  {copied ? '✓ Copied!' : '📋 Copy'}
+                  {copied ? (
+                    <>
+                      <Icon name="check" size={13} /> Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Icon name="copy" size={13} /> Copy
+                    </>
+                  )}
                 </button>
               </div>
               <pre className="tok-popover-code">
@@ -423,7 +432,7 @@ export default function InteractiveHeroCopy({
               className="tok-action-btn"
               onClick={() => handleExecuteAction(activePinnedToken)}
             >
-              ⚡ {activePinnedToken.actionText}
+              <Icon name="terminal" size={14} /> {activePinnedToken.actionText}
             </button>
             <span className="tok-footer-hint">
               Press <kbd>Esc</kbd> to close

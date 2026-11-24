@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { diffManifests, type ManifestDiffReport } from '../lib/api';
+import Icon from './Icon';
 
 const PRESET_BASELINE_POSTGRES = JSON.stringify(
   {
@@ -183,7 +184,9 @@ export default function PermissionDiff({
       <div className="card diff-header-card">
         <div className="card-header">
           <div>
-            <h2>🔀 Agent Permission Diff & Drift Detector</h2>
+            <h2>
+              <Icon name="diff" size={20} /> Agent Permission Diff & Drift Detector
+            </h2>
             <p className="directory-subtitle">
               Compare baseline releases (v1) against target pull requests (v2)
               to identify newly added tools, removed capabilities, relaxed
@@ -197,14 +200,14 @@ export default function PermissionDiff({
               className="btn-sm btn-danger"
               onClick={loadRugPullDemo}
             >
-              ⚠ Rug-Pull Escalation
+              <Icon name="warning" size={13} /> Rug-Pull Escalation
             </button>
             <button
               type="button"
               className="btn-sm btn-safe"
               onClick={loadHardeningDemo}
             >
-              ✔ Hardened Reduction
+              <Icon name="check-circle" size={13} /> Hardened Reduction
             </button>
           </div>
         </div>
@@ -247,7 +250,13 @@ export default function PermissionDiff({
             onClick={handleCompare}
             disabled={loading}
           >
-            {loading ? 'Analyzing Differences...' : '🔀 Compare Manifests & Compute Risk Delta'}
+            {loading ? (
+              'Analyzing Differences...'
+            ) : (
+              <>
+                <Icon name="diff" size={15} /> Compare Manifests & Compute Risk Delta
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -269,7 +278,9 @@ export default function PermissionDiff({
                   : '0 Risk Delta (NEUTRAL)'}
               </span>
               <span className="diff-scores-label">
-                Baseline: <strong>{diffReport.baselineScore}/100</strong> ➔ Target: <strong>{diffReport.targetScore}/100</strong>
+                Baseline: <strong>{diffReport.baselineScore}/100</strong>{' '}
+                <Icon name="arrow-right" size={12} /> Target:{' '}
+                <strong>{diffReport.targetScore}/100</strong>
               </span>
             </div>
 
@@ -296,7 +307,9 @@ export default function PermissionDiff({
               <span className="metric-label">Tools Removed</span>
             </div>
             <div className="diff-metric-tile tile-escalated">
-              <span className="metric-num">⚠ {diffReport.summary.escalatedCount}</span>
+              <span className="metric-num">
+                <Icon name="warning" size={14} /> {diffReport.summary.escalatedCount}
+              </span>
               <span className="metric-label">Escalated</span>
             </div>
             <div className="diff-metric-tile tile-modified">
@@ -304,7 +317,9 @@ export default function PermissionDiff({
               <span className="metric-label">Total Modified</span>
             </div>
             <div className="diff-metric-tile tile-unchanged">
-              <span className="metric-num">✔ {diffReport.summary.unchangedCount}</span>
+              <span className="metric-num">
+                <Icon name="check-circle" size={14} /> {diffReport.summary.unchangedCount}
+              </span>
               <span className="metric-label">Unchanged</span>
             </div>
           </div>
@@ -325,13 +340,17 @@ export default function PermissionDiff({
                       <div className="diff-tool-name-row">
                         <code className="diff-tool-title">{mod.name}</code>
                         {mod.isEscalated ? (
-                          <span className="sev-pill-escalated">⚠ PERMISSION ESCALATED</span>
+                          <span className="sev-pill-escalated">
+                            <Icon name="warning" size={12} /> PERMISSION ESCALATED
+                          </span>
                         ) : (
                           <span className="sev-pill-neutral">MODIFIED</span>
                         )}
                       </div>
                       <span className="diff-fp-change">
-                        <code>{mod.baselineFingerprint.slice(0, 12)}</code> ➔ <code>{mod.targetFingerprint.slice(0, 12)}</code>
+                        <code>{mod.baselineFingerprint.slice(0, 12)}</code>{' '}
+                        <Icon name="arrow-right" size={11} />{' '}
+                        <code>{mod.targetFingerprint.slice(0, 12)}</code>
                       </span>
                     </div>
 
@@ -342,7 +361,9 @@ export default function PermissionDiff({
                           className={`prop-change-item change-${ch.severity}`}
                         >
                           <div className="prop-change-desc">
-                            <span className="change-bullet">↳</span>
+                            <span className="change-bullet">
+                              <Icon name="sub-item" size={12} />
+                            </span>
                             <strong>{ch.path}:</strong> {ch.description}
                           </div>
                           {ch.before !== undefined && ch.after !== undefined && (

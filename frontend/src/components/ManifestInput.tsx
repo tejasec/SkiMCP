@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import Icon from './Icon';
 
 // ── 5 Real-World Showcase Fixtures ──────────────────────────────────────
 
@@ -193,7 +194,7 @@ const PRESET_RUGPULL_EVOLUTION = JSON.stringify(
   2,
 );
 
-const EXAMPLE_CLAUDE_CONFIG = JSON.stringify(
+const EXAMPLE_DESKTOP_CONFIG = JSON.stringify(
   {
     mcpServers: {
       github: {
@@ -285,14 +286,14 @@ export default function ManifestInput({
             className={`tab-btn ${scanMode === 'manifest' ? 'active' : ''}`}
             onClick={() => onScanModeChange('manifest')}
           >
-            📄 Manifest (JSON / YAML / JSONL / Config)
+            <Icon name="file-json" size={15} /> Manifest (JSON / YAML / JSONL / Config)
           </button>
           <button
             type="button"
             className={`tab-btn ${scanMode === 'url' ? 'active' : ''}`}
             onClick={() => onScanModeChange('url')}
           >
-            🌐 Live Server URL (HTTP / SSE)
+            <Icon name="globe" size={15} /> Live Server URL (HTTP / SSE)
           </button>
         </div>
       </div>
@@ -339,9 +340,9 @@ export default function ManifestInput({
             <button
               type="button"
               className="btn-sm btn-outline"
-              onClick={() => onChange(EXAMPLE_CLAUDE_CONFIG)}
+              onClick={() => onChange(EXAMPLE_DESKTOP_CONFIG)}
             >
-              Claude Config
+              Desktop Config
             </button>
             <button
               type="button"
@@ -356,7 +357,7 @@ export default function ManifestInput({
             className="manifest-textarea"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder='Paste your MCP tools/list JSON, YAML, JSON Lines, or claude_desktop_config.json here...&#10;&#10;{ "tools": [ { "name": "...", "description": "...", "inputSchema": { ... } } ] }'
+            placeholder='Paste your MCP tools/list JSON, YAML, JSON Lines, or desktop_config.json here...&#10;&#10;{ "tools": [ { "name": "...", "description": "...", "inputSchema": { ... } } ] }'
             rows={14}
             spellCheck={false}
           />
@@ -395,7 +396,9 @@ export default function ManifestInput({
               checked={runCanaryProbes}
               onChange={(e) => onRunCanaryProbesChange?.(e.target.checked)}
             />
-            <span>🧪 Opt-in: Run runtime canary sandbox probes (sends safe benign JSON-RPC calls to detect active shell execution)</span>
+            <span>
+              <Icon name="flask" size={14} /> Opt-in: Run runtime canary sandbox probes (sends safe benign JSON-RPC calls to detect active shell execution)
+            </span>
           </label>
         )}
       </div>
@@ -425,7 +428,17 @@ export default function ManifestInput({
           onClick={onScan}
           disabled={scanning}
         >
-          {scanning ? 'Auditing...' : scanMode === 'url' ? '🔍 Fetch & Audit URL' : '🔍 Scan Manifest'}
+          {scanning ? (
+            'Auditing...'
+          ) : scanMode === 'url' ? (
+            <>
+              <Icon name="search" size={15} /> Fetch & Audit URL
+            </>
+          ) : (
+            <>
+              <Icon name="search" size={15} /> Scan Manifest
+            </>
+          )}
         </button>
       </div>
     </div>

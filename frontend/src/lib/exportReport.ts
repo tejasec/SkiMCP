@@ -91,13 +91,13 @@ export function generateMarkdownReport(report: ScanReport): string {
   lines.push('|---|---|---|');
   
   const categoryRules: Record<string, string[]> = {
-    '⚡ Shell & Execution': ['shell-execution', 'tool-shadowing'],
-    '📁 Filesystem Access': ['filesystem-broad', 'filesystem-sensitive'],
-    '🌐 Network & Egress': ['network-egress'],
-    '🔑 Credentials & Secrets': ['credential-access'],
-    '🎯 Prompt & AI Integrity': ['prompt-injection', 'obfuscation-detected', 'resource-prompt-injection'],
-    '⚠️ Advisories & Blocklist': ['advisory-match'],
-    '📐 Schema Scope': ['over-permission', 'vague-description'],
+    'Shell & Execution': ['shell-execution', 'tool-shadowing'],
+    'Filesystem Access': ['filesystem-broad', 'filesystem-sensitive'],
+    'Network & Egress': ['network-egress'],
+    'Credentials & Secrets': ['credential-access'],
+    'Prompt & AI Integrity': ['prompt-injection', 'obfuscation-detected', 'resource-prompt-injection'],
+    'Advisories & Blocklist': ['advisory-match'],
+    'Schema Scope': ['over-permission', 'vague-description'],
   };
 
   for (const [catName, rIds] of Object.entries(categoryRules)) {
@@ -127,7 +127,7 @@ export function generateMarkdownReport(report: ScanReport): string {
   lines.push('');
 
   if (findings.length === 0) {
-    lines.push('✅ **No security issues found.** All scanned tools adhere to declarative safety rules.');
+    lines.push('[PASS] **No security issues found.** All scanned tools adhere to declarative safety rules.');
   } else {
     findings.forEach((f, idx) => {
       lines.push(`### ${idx + 1}. [${f.severity.toUpperCase()}] ${f.title}`);

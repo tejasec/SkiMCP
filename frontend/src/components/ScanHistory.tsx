@@ -6,6 +6,7 @@ import {
   exportScanHistory,
   type ScanHistoryEntry,
 } from '../lib/history';
+import Icon from './Icon';
 
 interface ScanHistoryProps {
   onLoadManifest: (rawManifest: string) => void;
@@ -78,13 +79,23 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
     <div className="card scan-history-card">
       <div className="history-header" onClick={() => setIsOpen(!isOpen)}>
         <div className="history-header-title">
-          <span className="history-icon">📜</span>
+          <span className="history-icon">
+            <Icon name="history" size={18} />
+          </span>
           <h3>Local Scan History</h3>
           <span className="history-badge">{history.length} saved</span>
         </div>
         <div className="history-header-actions">
           <span className="history-toggle-hint">
-            {isOpen ? 'Collapse ▲' : 'Expand ▼'}
+            {isOpen ? (
+              <>
+                Collapse <Icon name="chevron-up" size={12} />
+              </>
+            ) : (
+              <>
+                Expand <Icon name="chevron-down" size={12} />
+              </>
+            )}
           </span>
         </div>
       </div>
@@ -102,7 +113,7 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
                   className="btn-sm btn-safe"
                   onClick={handleCompareSelected}
                 >
-                  🔀 Compare Selected (2)
+                  <Icon name="diff" size={13} /> Compare Selected (2)
                 </button>
               )}
               {history.length > 0 && (
@@ -113,7 +124,7 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
                     onClick={exportScanHistory}
                     title="Export history as JSON"
                   >
-                    📥 Export History
+                    <Icon name="history" size={13} /> Export History
                   </button>
                   <button
                     type="button"
@@ -121,7 +132,7 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
                     onClick={handleClear}
                     title="Clear history"
                   >
-                    🗑️ Clear
+                    <Icon name="trash" size={13} /> Clear
                   </button>
                 </>
               )}
@@ -161,7 +172,15 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
                           {entry.riskScore}/100 {entry.overallRisk.toUpperCase()}
                         </span>
                         <span className="history-item-source">
-                          {entry.source === 'url' ? '🌐 URL' : '📋 Manifest'}{' '}
+                          {entry.source === 'url' ? (
+                            <>
+                              <Icon name="globe" size={12} /> URL
+                            </>
+                          ) : (
+                            <>
+                              <Icon name="file-json" size={12} /> Manifest
+                            </>
+                          )}{' '}
                           {entry.sourceLabel ? `(${entry.sourceLabel})` : ''}
                         </span>
                         <span className="history-item-date">{dateStr}</span>
@@ -188,7 +207,7 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
                         }}
                         title="Load this manifest in scanner"
                       >
-                        🔍 Load
+                        <Icon name="search" size={12} /> Load
                       </button>
                       <button
                         type="button"
@@ -197,7 +216,7 @@ export default function ScanHistory({ onLoadManifest, onCompare }: ScanHistoryPr
                         title="Delete this snapshot"
                         aria-label="Delete snapshot"
                       >
-                        ✕
+                        <Icon name="close" size={12} />
                       </button>
                     </div>
                   </div>

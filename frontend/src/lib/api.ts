@@ -143,7 +143,7 @@ export async function getHealth(): Promise<HealthResponse> {
 
 /**
  * Scan a manifest provided as raw JSON, YAML, JSON Lines (.jsonl),
- * or Claude Desktop config.
+ * or desktop client config.
  */
 export async function scanManifest(
   manifestInput: string,

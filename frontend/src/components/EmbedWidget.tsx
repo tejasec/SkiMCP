@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { getBadgeInfo } from '../lib/exportReport';
+import Icon from './Icon';
 
 export interface EmbedData {
   score: number;
@@ -45,7 +46,9 @@ export default function EmbedWidget() {
       <div className="embed-widget-card">
         <div className="embed-header">
           <div className="embed-brand">
-            <span className="embed-shield">🛡️</span>
+            <span className="embed-shield">
+              <Icon name="shield" size={18} />
+            </span>
             <div>
               <span className="embed-title">
                 {data.serverName || 'MCP Manifest Security'}
@@ -81,7 +84,7 @@ export default function EmbedWidget() {
             rel="noopener noreferrer"
             className="embed-report-link"
           >
-            Full Report ➔
+            Full Report <Icon name="arrow-right" size={12} />
           </a>
         </div>
       </div>

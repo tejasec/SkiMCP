@@ -13,6 +13,7 @@ import EmbedWidget from './components/EmbedWidget';
 import { saveScanToHistory } from './lib/history';
 import directoryDataRaw from './data/trust-directory.json';
 import InteractiveHeroCopy from './components/InteractiveHeroCopy';
+import Icon from './components/Icon';
 
 type ScanMode = 'manifest' | 'url';
 type ActiveView = 'scanner' | 'diff' | 'directory';
@@ -171,10 +172,18 @@ export default function App() {
             type="button"
             className="theme-toggle-btn"
             onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}
-            title={`Switch to ${theme === 'light' ? 'Dark' : 'Claude Light'} Mode`}
+            title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
             aria-label="Toggle theme"
           >
-            {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+            {theme === 'light' ? (
+              <>
+                <Icon name="moon" size={14} /> Dark
+              </>
+            ) : (
+              <>
+                <Icon name="sun" size={14} /> Light
+              </>
+            )}
           </button>
         </div>
         <h1>Scan MCP Tool Manifests for Security Risks</h1>
@@ -207,21 +216,21 @@ export default function App() {
             className={`view-nav-btn ${activeView === 'scanner' ? 'active' : ''}`}
             onClick={() => setActiveView('scanner')}
           >
-            🔍 Live Manifest Scanner
+            <Icon name="search" size={15} /> Live Manifest Scanner
           </button>
           <button
             type="button"
             className={`view-nav-btn ${activeView === 'diff' ? 'active' : ''}`}
             onClick={() => setActiveView('diff')}
           >
-            🔀 Permission Diff (v1 vs v2)
+            <Icon name="diff" size={15} /> Permission Diff (v1 vs v2)
           </button>
           <button
             type="button"
             className={`view-nav-btn ${activeView === 'directory' ? 'active' : ''}`}
             onClick={() => setActiveView('directory')}
           >
-            📚 Curated Trust Directory{' '}
+            <Icon name="library" size={15} /> Curated Trust Directory{' '}
             <span className="nav-count-badge">{totalCuratedServers}</span>
           </button>
         </nav>

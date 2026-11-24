@@ -1,3 +1,5 @@
+import type { IconName } from '../components/Icon';
+
 export type TokenCategory =
   | 'Execution Safety'
   | 'Data Boundary'
@@ -21,6 +23,7 @@ export interface HeroToken {
   className: string;
   category: TokenCategory;
   glyph: string;
+  iconName: IconName;
   peekDescription: string;
   peekArtifact: string;
   fullDescription: string;
@@ -198,7 +201,7 @@ const PRESET_YAML_PAYLOAD = `tools:
 const PRESET_JSONL_PAYLOAD = `{"name":"search_repositories","description":"Search for public and private GitHub repositories using qualifiers.","inputSchema":{"type":"object","properties":{"query":{"type":"string"}},"required":["query"],"additionalProperties":false}}
 {"name":"get_pull_request","description":"Get details of a pull request by number and repo owner.","inputSchema":{"type":"object","properties":{"owner":{"type":"string"},"repo":{"type":"string"},"pull_number":{"type":"integer"}},"required":["owner","repo","pull_number"],"additionalProperties":false}}`;
 
-const PRESET_CLAUDE_CONFIG_PAYLOAD = JSON.stringify(
+const PRESET_DESKTOP_CONFIG_PAYLOAD = JSON.stringify(
   {
     mcpServers: {
       github: {
@@ -226,12 +229,13 @@ export const HERO_TOKENS: HeroToken[] = [
     label: 'shell execution',
     className: 'tok-shell',
     category: 'Execution Safety',
-    glyph: '$ ',
+    glyph: '$',
+    iconName: 'terminal',
     peekDescription: 'Flags tools executing arbitrary host commands via binaries like bash, sh, eval, or exec.',
     peekArtifact: 'skimcp scan <manifest> --fail-on=critical',
     fullDescription:
       'Audits tool manifests for arbitrary bash/sh execution, subprocess spawning, and unconstrained command arguments without parameter allowlists or OS sandboxing.',
-    cliCommand: 'skimcp scan ./claude_desktop_config.json --fail-on=critical',
+    cliCommand: 'skimcp scan ./desktop_config.json --fail-on=critical',
     codeSnippet: PRESET_SHELL_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#shell-execution',
@@ -244,12 +248,13 @@ export const HERO_TOKENS: HeroToken[] = [
     label: 'credential access',
     className: 'tok-cred',
     category: 'Data Boundary',
-    glyph: '⚿ ',
+    glyph: 'KEY',
+    iconName: 'key',
     peekDescription: 'Detects references to SSH keys, .env secrets, auth tokens, and API credentials.',
     peekArtifact: 'Rule: credential-access (Critical / High)',
     fullDescription:
       'Detects patterns targeting sensitive credentials such as id_rsa, .env files, bearer tokens, OAuth secrets, and authorization parameters in tool descriptions and input schemas.',
-    cliCommand: 'skimcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high',
+    cliCommand: 'skimcp scan ./desktop_config.json --fail-on=high',
     codeSnippet: PRESET_CREDENTIAL_PAYLOAD,
     snippetLanguage: 'json',
     docsUrl: '#credential-access',
@@ -263,6 +268,7 @@ export const HERO_TOKENS: HeroToken[] = [
     className: 'tok-inject',
     category: 'Prompt Integrity',
     glyph: '“ ”',
+    iconName: 'target',
     peekDescription: 'Uncovers covert prompt hijacking, system role overrides, and XML tag tampering.',
     peekArtifact: '--include-prompts (AST audit)',
     fullDescription:
@@ -280,7 +286,8 @@ export const HERO_TOKENS: HeroToken[] = [
     label: 'tool shadowing',
     className: 'tok-shadow',
     category: 'Execution Safety',
-    glyph: '❐ ',
+    glyph: 'GHOST',
+    iconName: 'layers',
     peekDescription: 'Detects rogue tools mimicking OS binaries (curl, ls, eval) or agent control primitives.',
     peekArtifact: 'Targets: ls, cat, curl, eval, final_answer, computer_use',
     fullDescription:
@@ -298,7 +305,8 @@ export const HERO_TOKENS: HeroToken[] = [
     label: 'obfuscation',
     className: 'tok-obf',
     category: 'Prompt Integrity',
-    glyph: '░ ░',
+    glyph: '***',
+    iconName: 'eye-off',
     peekDescription: 'Reveals zero-width Unicode steganography, BiDi overrides, and concealed Base64 payloads.',
     peekArtifact: 'skimcp harden <path> --output hardened.json',
     fullDescription:
@@ -317,6 +325,7 @@ export const HERO_TOKENS: HeroToken[] = [
     className: 'tok-json',
     category: 'Format Ingestion',
     glyph: '{ }',
+    iconName: 'file-json',
     peekDescription: 'Standard RFC 8259 MCP specification: { "tools": [...] } or raw tool arrays.',
     peekArtifact: 'skimcp scan manifest.json --format=table',
     fullDescription:
@@ -335,6 +344,7 @@ export const HERO_TOKENS: HeroToken[] = [
     className: 'tok-yaml',
     category: 'Format Ingestion',
     glyph: ':',
+    iconName: 'file-json',
     peekDescription: 'Parses multi-line .yaml/.yml manifests without requiring bracket delimiters.',
     peekArtifact: 'skimcp scan ./manifest.yaml',
     fullDescription:
@@ -352,7 +362,8 @@ export const HERO_TOKENS: HeroToken[] = [
     label: 'JSONL',
     className: 'tok-jsonl',
     category: 'Format Ingestion',
-    glyph: '↵',
+    glyph: '\\n',
+    iconName: 'corner-down-left',
     peekDescription: 'Ingests streaming newline-delimited JSON tools exported line-by-line.',
     peekArtifact: 'skimcp scan ./tools.jsonl',
     fullDescription:
@@ -366,29 +377,31 @@ export const HERO_TOKENS: HeroToken[] = [
     actionPayload: { manifest: PRESET_JSONL_PAYLOAD, autoScan: true },
   },
   {
-    id: 'claude-config',
-    label: 'Claude Desktop configs',
-    className: 'tok-claude',
+    id: 'desktop-config',
+    label: 'desktop host configs',
+    className: 'tok-cfg',
     category: 'Platform Config',
-    glyph: '✳ ',
-    peekDescription: 'Audits ~/.config/Claude/claude_desktop_config.json for command & secret leaks.',
-    peekArtifact: 'Path: ~/.config/Claude/claude_desktop_config.json',
+    glyph: 'CFG',
+    iconName: 'asterisk',
+    peekDescription: 'Audits desktop client configuration files for command & secret leaks.',
+    peekArtifact: 'Path: ~/.config/.../desktop_config.json',
     fullDescription:
-      'Directly audits Claude Desktop configuration files. Extracts all registered mcpServers, examining executable binaries (npx, docker, bash), CLI arguments, and environment variable credentials.',
-    cliCommand: 'skimcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high',
-    codeSnippet: PRESET_CLAUDE_CONFIG_PAYLOAD,
+      'Directly audits desktop client configuration files. Extracts all registered mcpServers, examining executable binaries (npx, docker, bash), CLI arguments, and environment variable credentials.',
+    cliCommand: 'skimcp scan ./desktop_config.json --fail-on=high',
+    codeSnippet: PRESET_DESKTOP_CONFIG_PAYLOAD,
     snippetLanguage: 'json',
-    docsUrl: '#claude-desktop-configuration',
-    actionText: 'Load Claude Config',
+    docsUrl: '#desktop-configuration',
+    actionText: 'Load Desktop Config',
     actionType: 'load_preset',
-    actionPayload: { manifest: PRESET_CLAUDE_CONFIG_PAYLOAD, autoScan: true },
+    actionPayload: { manifest: PRESET_DESKTOP_CONFIG_PAYLOAD, autoScan: true },
   },
   {
     id: 'live-sse',
     label: 'live SSE/HTTP endpoints',
     className: 'tok-sse',
     category: 'Network Handshake',
-    glyph: '●',
+    glyph: 'SSE',
+    iconName: 'globe',
     peekDescription: 'Direct endpoint auditing via JSON-RPC 2.0 or SSE stream with strict SSRF defense.',
     peekArtifact: 'POST /api/scan-url (Blocked: 127.0.0.1, 169.254.169.254)',
     fullDescription:
@@ -413,7 +426,8 @@ export const HERO_TOKENS: HeroToken[] = [
     label: 'permission drift diffing',
     className: 'tok-diff',
     category: 'Drift Analysis',
-    glyph: '± ',
+    glyph: '+/-',
+    iconName: 'diff-delta',
     peekDescription: 'Compares v1 baseline against v2 target to detect permission escalations and rug-pulls.',
     peekArtifact: 'skimcp diff ./manifest-v1.json ./manifest-v2.json',
     fullDescription:

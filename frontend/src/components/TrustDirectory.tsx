@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import directoryDataRaw from '../data/trust-directory.json';
+import Icon, { type IconName } from './Icon';
 
 export interface DirectoryFinding {
   ruleId: string;
@@ -120,7 +121,9 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
       <div className="card directory-stats-card">
         <div className="directory-stats-header">
           <div>
-            <h2>📚 Curated MCP Trust Directory</h2>
+            <h2>
+              <Icon name="library" size={20} /> Curated MCP Trust Directory
+            </h2>
             <p className="directory-subtitle">
               Pre-audited public MCP servers harvested from ecosystem registries with cryptographic SHA-256 fingerprints, risk scores, and permission threat breakdowns.
             </p>
@@ -135,15 +138,21 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
           </div>
           <div className="metric-box metric-verified">
             <span className="metric-num">{stats.verifiedCount}</span>
-            <span className="metric-label">✅ Verified Safe</span>
+            <span className="metric-label">
+              <Icon name="check-circle" size={13} /> Verified Safe
+            </span>
           </div>
           <div className="metric-box metric-caution">
             <span className="metric-num">{stats.cautionCount}</span>
-            <span className="metric-label">⚠️ Caution</span>
+            <span className="metric-label">
+              <Icon name="warning" size={13} /> Caution
+            </span>
           </div>
           <div className="metric-box metric-dangerous">
             <span className="metric-num">{stats.dangerousCount}</span>
-            <span className="metric-label">🚨 Avoid / High Risk</span>
+            <span className="metric-label">
+              <Icon name="critical" size={13} /> Avoid / High Risk
+            </span>
           </div>
           <div className="metric-box">
             <span className="metric-num">{stats.avgRiskScore}<span className="metric-denom">/100</span></span>
@@ -156,7 +165,9 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
       <div className="card directory-controls-card">
         <div className="search-bar-row">
           <div className="search-input-wrap">
-            <span className="search-icon">🔍</span>
+            <span className="search-icon">
+              <Icon name="search" size={14} />
+            </span>
             <input
               type="text"
               className="directory-search-input"
@@ -170,8 +181,9 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                 className="clear-search-btn"
                 onClick={() => setSearchQuery('')}
                 title="Clear search"
+                aria-label="Clear search"
               >
-                ✕
+                <Icon name="close" size={14} />
               </button>
             )}
           </div>
@@ -233,21 +245,21 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                 className={`filter-chip chip-verified ${selectedTrustLevel === 'verified' ? 'active' : ''}`}
                 onClick={() => setSelectedTrustLevel('verified')}
               >
-                ✅ Verified Safe ({stats.verifiedCount})
+                <Icon name="check-circle" size={13} /> Verified Safe ({stats.verifiedCount})
               </button>
               <button
                 type="button"
                 className={`filter-chip chip-caution ${selectedTrustLevel === 'caution' ? 'active' : ''}`}
                 onClick={() => setSelectedTrustLevel('caution')}
               >
-                ⚠️ Caution ({stats.cautionCount})
+                <Icon name="warning" size={13} /> Caution ({stats.cautionCount})
               </button>
               <button
                 type="button"
                 className={`filter-chip chip-dangerous ${selectedTrustLevel === 'dangerous' ? 'active' : ''}`}
                 onClick={() => setSelectedTrustLevel('dangerous')}
               >
-                🚨 Dangerous ({stats.dangerousCount})
+                <Icon name="critical" size={13} /> Dangerous ({stats.dangerousCount})
               </button>
             </div>
           </div>
@@ -300,12 +312,19 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                 ? 'trust-badge-caution'
                 : 'trust-badge-dangerous';
 
-            const trustLabel =
+            const trustBadgeIcon: IconName =
               server.trustLevel === 'verified'
-                ? '✅ Verified Safe'
+                ? 'check-circle'
                 : server.trustLevel === 'caution'
-                ? '⚠️ Caution'
-                : '🚨 Avoid / High Risk';
+                ? 'warning'
+                : 'critical';
+
+            const trustLabelText =
+              server.trustLevel === 'verified'
+                ? 'Verified Safe'
+                : server.trustLevel === 'caution'
+                ? 'Caution'
+                : 'Avoid / High Risk';
 
             return (
               <div key={server.id} className={`card server-card ${server.trustLevel}`}>
@@ -323,7 +342,9 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                   </div>
 
                   <div className="server-badges">
-                    <span className={`trust-badge ${trustBadgeClass}`}>{trustLabel}</span>
+                    <span className={`trust-badge ${trustBadgeClass}`}>
+                      <Icon name={trustBadgeIcon} size={13} /> {trustLabelText}
+                    </span>
                     <span className={`risk-pill risk-${server.overallRisk}`}>
                       Score {server.riskScore}/100
                     </span>
@@ -371,7 +392,15 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                     onClick={(e) => handleCopyFingerprint(server.manifestFingerprint, e)}
                     title="Copy full SHA-256 fingerprint"
                   >
-                    {copiedFingerprint === server.manifestFingerprint ? '✓ Copied' : '📋 Copy'}
+                    {copiedFingerprint === server.manifestFingerprint ? (
+                      <>
+                        <Icon name="check" size={12} /> Copied
+                      </>
+                    ) : (
+                      <>
+                        <Icon name="copy" size={12} /> Copy
+                      </>
+                    )}
                   </button>
                 </div>
 
@@ -385,7 +414,7 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
 
                     {server.topFindings.length === 0 ? (
                       <div className="drawer-clean-message">
-                        🛡️ Zero dangerous patterns detected. Clean deterministic audit.
+                        <Icon name="shield" size={14} /> Zero dangerous patterns detected. Clean deterministic audit.
                       </div>
                     ) : (
                       <ul className="drawer-findings-list">
@@ -411,7 +440,15 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                     className="btn-sm btn-outline toggle-audit-btn"
                     onClick={() => setExpandedServerId(isExpanded ? null : server.id)}
                   >
-                    {isExpanded ? 'Hide Audit Details ▲' : `View Audit Findings (${server.findingsCount}) ▼`}
+                    {isExpanded ? (
+                      <>
+                        Hide Audit Details <Icon name="chevron-up" size={12} />
+                      </>
+                    ) : (
+                      <>
+                        View Audit Findings ({server.findingsCount}) <Icon name="chevron-down" size={12} />
+                      </>
+                    )}
                   </button>
 
                   <div className="card-right-actions">
@@ -421,7 +458,7 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                       rel="noopener noreferrer"
                       className="btn-sm btn-outline repo-link"
                     >
-                      GitHub Repo ↗
+                      GitHub Repo <Icon name="external-link" size={12} />
                     </a>
                     <button
                       type="button"
@@ -429,7 +466,7 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                       onClick={() => handleInspect(server)}
                       title="Load this manifest into the Scanner and run a fresh audit"
                     >
-                      🔍 Inspect in Scanner
+                      <Icon name="search" size={13} /> Inspect in Scanner
                     </button>
                   </div>
                 </div>

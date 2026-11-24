@@ -7,6 +7,7 @@ import {
   downloadFile,
 } from '../lib/exportReport';
 import { hardenManifest, type HardenedManifestResult } from '../lib/api';
+import Icon, { type IconName } from './Icon';
 
 const SEVERITY_BADGE: Record<string, string> = {
   critical: 'badge-critical',
@@ -15,40 +16,40 @@ const SEVERITY_BADGE: Record<string, string> = {
   low: 'badge-low',
 };
 
-const CATEGORY_MAP: Record<string, { label: string; icon: string; rules: string[] }> = {
+const CATEGORY_MAP: Record<string, { label: string; icon: IconName; rules: string[] }> = {
   shell: {
     label: 'Shell & Execution',
-    icon: '⚡',
+    icon: 'terminal',
     rules: ['shell-execution', 'tool-shadowing'],
   },
   fs: {
     label: 'Filesystem Access',
-    icon: '📁',
+    icon: 'folder',
     rules: ['filesystem-broad', 'filesystem-sensitive'],
   },
   net: {
     label: 'Network & Egress',
-    icon: '🌐',
+    icon: 'globe',
     rules: ['network-egress'],
   },
   cred: {
     label: 'Credentials & Secrets',
-    icon: '🔑',
+    icon: 'key',
     rules: ['credential-access'],
   },
   prompt: {
     label: 'Prompt & AI Integrity',
-    icon: '🎯',
+    icon: 'target',
     rules: ['prompt-injection', 'obfuscation-detected', 'resource-prompt-injection'],
   },
   advisory: {
     label: 'Advisories & Blocklist',
-    icon: '⚠️',
+    icon: 'warning',
     rules: ['advisory-match'],
   },
   schema: {
     label: 'Schema Scope',
-    icon: '📐',
+    icon: 'gauge',
     rules: ['over-permission', 'vague-description'],
   },
 };
@@ -168,7 +169,7 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
     return report.findings.filter((f) => f.ruleId === 'advisory-match');
   }, [report.findings]);
 
-  // ── 4-Pillar Multi-Dimensional Risk Metrics ─────────────────────────────
+  // ── Multi-Dimensional Risk Metrics ──────────────────────────────────────
   const pillars = useMemo(() => {
     const p1Rules = ['shell-execution', 'tool-shadowing'];
     const p2Rules = [
@@ -235,7 +236,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
       {/* ── Community Advisory Warning Banner (F-11) ── */}
       {advisoryFindings.length > 0 && (
         <div className="advisory-alert-banner">
-          <div className="advisory-alert-icon">⚠️</div>
+          <div className="advisory-alert-icon">
+            <Icon name="warning" size={22} />
+          </div>
           <div className="advisory-alert-text">
             <strong>Community Advisory Match:</strong> {advisoryFindings.length} tool(s) match
             known malicious patterns or blocklist signatures! Review findings below immediately.
@@ -266,7 +269,15 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
             disabled={isHardening}
             title="Automatically strip prompt injection, enforce additionalProperties: false, and add path regex"
           >
-            {isHardening ? '🛡️ Hardening...' : '🛡️ Generate Hardened Manifest'}
+            {isHardening ? (
+              <>
+                <Icon name="shield" size={14} /> Hardening...
+              </>
+            ) : (
+              <>
+                <Icon name="shield" size={14} /> Generate Hardened Manifest
+              </>
+            )}
           </button>
           <button
             type="button"
@@ -274,7 +285,7 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
             onClick={() => setShowEmbedModal(true)}
             title="Get embeddable iframe widget code"
           >
-            🔗 Embed Widget
+            <Icon name="link" size={14} /> Embed Widget
           </button>
           <button
             type="button"
@@ -282,7 +293,15 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
             onClick={handleCopyBadge}
             title="Copy Shields.io Markdown badge"
           >
-            {copiedBadge ? '✓ Badge Copied!' : '🛡️ Copy Badge'}
+            {copiedBadge ? (
+              <>
+                <Icon name="check" size={14} /> Badge Copied!
+              </>
+            ) : (
+              <>
+                <Icon name="shield" size={14} /> Copy Badge
+              </>
+            )}
           </button>
           <button
             type="button"
@@ -290,7 +309,15 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
             onClick={handleCopyJson}
             title="Copy raw JSON to clipboard"
           >
-            {copiedJson ? '✓ JSON Copied!' : '📋 Copy JSON'}
+            {copiedJson ? (
+              <>
+                <Icon name="check" size={14} /> JSON Copied!
+              </>
+            ) : (
+              <>
+                <Icon name="copy" size={14} /> Copy JSON
+              </>
+            )}
           </button>
           <button
             type="button"
@@ -298,7 +325,7 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
             onClick={handleDownloadMarkdown}
             title="Download standalone Markdown audit report"
           >
-            📥 Export Report (MD)
+            <Icon name="history" size={14} /> Export Report (MD)
           </button>
           <button
             type="button"
@@ -306,7 +333,7 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
             onClick={handleDownloadJson}
             title="Download full JSON report"
           >
-            📥 Export JSON
+            <Icon name="history" size={14} /> Export JSON
           </button>
         </div>
       </div>
@@ -345,7 +372,7 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
               className="btn-inline clear-filter-btn"
               onClick={() => setSelectedCategory(null)}
             >
-              Reset Filter ✕
+              Reset Filter <Icon name="close" size={12} />
             </button>
           )}
         </div>
@@ -361,7 +388,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 title={`Click to filter findings by ${cat.label}`}
               >
                 <div className="cat-card-top">
-                  <span className="cat-icon">{cat.icon}</span>
+                  <span className="cat-icon">
+                    <Icon name={cat.icon} size={16} />
+                  </span>
                   <span className="cat-count-badge">{cat.count}</span>
                 </div>
                 <div className="cat-label">{cat.label}</div>
@@ -378,17 +407,19 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
         </div>
       </div>
 
-      {/* ── 4-Pillar Multi-Dimensional Risk Visualizer ── */}
+      {/* ── Multi-Dimensional Risk Visualizer ── */}
       <div className="pillars-container">
         <div className="pillars-header">
-          <h3>4-Pillar Threat Breakdown</h3>
+          <h3>Threat Breakdown</h3>
           <span className="pillars-sub">Multidimensional risk categorization across attack surfaces</span>
         </div>
 
         <div className="pillars-grid">
           <div className={`pillar-box pillar-${pillars.execution.level}`}>
             <div className="pillar-title-row">
-              <span className="pillar-icon">⚡</span>
+              <span className="pillar-icon">
+                <Icon name="terminal" size={16} />
+              </span>
               <span className="pillar-name">Execution Safety</span>
               <span className="pillar-count">{pillars.execution.count} findings</span>
             </div>
@@ -403,7 +434,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
 
           <div className={`pillar-box pillar-${pillars.boundary.level}`}>
             <div className="pillar-title-row">
-              <span className="pillar-icon">🌐</span>
+              <span className="pillar-icon">
+                <Icon name="globe" size={16} />
+              </span>
               <span className="pillar-name">Data & Network Boundary</span>
               <span className="pillar-count">{pillars.boundary.count} findings</span>
             </div>
@@ -418,7 +451,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
 
           <div className={`pillar-box pillar-${pillars.prompt.level}`}>
             <div className="pillar-title-row">
-              <span className="pillar-icon">🎯</span>
+              <span className="pillar-icon">
+                <Icon name="target" size={16} />
+              </span>
               <span className="pillar-name">Prompt & AI Integrity</span>
               <span className="pillar-count">{pillars.prompt.count} findings</span>
             </div>
@@ -433,7 +468,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
 
           <div className={`pillar-box pillar-${pillars.privilege.level}`}>
             <div className="pillar-title-row">
-              <span className="pillar-icon">📐</span>
+              <span className="pillar-icon">
+                <Icon name="gauge" size={16} />
+              </span>
               <span className="pillar-name">Privilege & Schema Scope</span>
               <span className="pillar-count">{pillars.privilege.count} findings</span>
             </div>
@@ -452,7 +489,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
       {report.canaryObservations && report.canaryObservations.length > 0 && (
         <div className="canary-container">
           <div className="canary-header">
-            <h3>🧪 Runtime Canary Sandbox Observations</h3>
+            <h3>
+              <Icon name="flask" size={16} /> Runtime Canary Sandbox Observations
+            </h3>
             <span className="canary-sub">
               Live inert test probes executed against server to observe runtime side-effect boundaries
             </span>
@@ -492,14 +531,24 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
       {/* Manifest Fingerprint Box */}
       <div className="fingerprint-banner">
         <div className="fingerprint-header">
-          <span className="fingerprint-label">🔑 Manifest SHA-256 Fingerprint:</span>
+          <span className="fingerprint-label">
+            <Icon name="key" size={14} /> Manifest SHA-256 Fingerprint:
+          </span>
           <code className="fingerprint-hash">{report.manifestFingerprint}</code>
           <button
             type="button"
             className="btn-inline"
             onClick={() => setShowFingerprints(!showFingerprints)}
           >
-            {showFingerprints ? 'Hide Tool Hashes ▲' : 'View Tool Lockfile ▼'}
+            {showFingerprints ? (
+              <>
+                Hide Tool Hashes <Icon name="chevron-up" size={12} />
+              </>
+            ) : (
+              <>
+                View Tool Lockfile <Icon name="chevron-down" size={12} />
+              </>
+            )}
           </button>
         </div>
 
@@ -529,9 +578,10 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
       {/* Findings List */}
       {filteredFindings.length === 0 ? (
         <div className="no-findings">
+          <Icon name="check-circle" size={16} />{' '}
           {selectedCategory
-            ? `✅ No findings in "${CATEGORY_MAP[selectedCategory]?.label}".`
-            : '✅ No security issues found. This manifest complies with MCP safety guidelines.'}
+            ? `No findings in "${CATEGORY_MAP[selectedCategory]?.label}".`
+            : 'No security issues found. This manifest complies with MCP safety guidelines.'}
         </div>
       ) : (
         <div className="findings-list">
@@ -544,7 +594,11 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 <span className="finding-tool">{f.toolName}</span>
                 <span className="finding-title">{f.title}</span>
                 <span className="finding-toggle">
-                  {expanded[i] ? '▲' : '▼'}
+                  {expanded[i] ? (
+                    <Icon name="chevron-up" size={12} />
+                  ) : (
+                    <Icon name="chevron-down" size={12} />
+                  )}
                 </span>
               </div>
               {expanded[i] && (
@@ -577,7 +631,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
           <div className="modal-content hardened-modal">
             <div className="modal-header">
               <div>
-                <h3>🛡️ Automated Hardened Manifest</h3>
+                <h3>
+                  <Icon name="shield" size={18} /> Automated Hardened Manifest
+                </h3>
                 <p className="modal-subtitle">
                   One-click remediation applied: stripped injection directives, locked additionalProperties, and enforced path validation regex.
                 </p>
@@ -586,8 +642,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 type="button"
                 className="close-modal-btn"
                 onClick={() => setShowHardenedModal(false)}
+                aria-label="Close hardened modal"
               >
-                ✕
+                <Icon name="close" size={16} />
               </button>
             </div>
 
@@ -596,7 +653,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 <span className="label">Original Risk:</span>
                 <span className="val">{hardenedResult.beforeScore}/100</span>
               </div>
-              <div className="score-arrow">➔</div>
+              <div className="score-arrow">
+                <Icon name="arrow-right" size={18} />
+              </div>
               <div className="score-badge-after">
                 <span className="label">Hardened Risk:</span>
                 <span className="val">{hardenedResult.afterScore}/100</span>
@@ -629,14 +688,22 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 className="btn-sm btn-outline"
                 onClick={handleCopyHardened}
               >
-                {copiedHardened ? '✓ JSON Copied!' : '📋 Copy JSON'}
+                {copiedHardened ? (
+                  <>
+                    <Icon name="check" size={14} /> JSON Copied!
+                  </>
+                ) : (
+                  <>
+                    <Icon name="copy" size={14} /> Copy JSON
+                  </>
+                )}
               </button>
               <button
                 type="button"
                 className="btn-sm btn-safe"
                 onClick={handleDownloadHardened}
               >
-                📥 Download Hardened Manifest
+                <Icon name="history" size={14} /> Download Hardened Manifest
               </button>
             </div>
           </div>
@@ -649,7 +716,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
           <div className="modal-content embed-modal">
             <div className="modal-header">
               <div>
-                <h3>🔗 Embeddable Scan Badge & Widget</h3>
+                <h3>
+                  <Icon name="link" size={18} /> Embeddable Scan Badge & Widget
+                </h3>
                 <p className="modal-subtitle">
                   Embed this live scan summary into documentation, READMEs, or dashboards.
                 </p>
@@ -658,8 +727,9 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 type="button"
                 className="close-modal-btn"
                 onClick={() => setShowEmbedModal(false)}
+                aria-label="Close embed modal"
               >
-                ✕
+                <Icon name="close" size={16} />
               </button>
             </div>
 
@@ -673,18 +743,18 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                     <head>
                       <style>
                         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F4F3EE; color: #1F1E1D; padding: 12px; }
-                        .card { border: 1px solid #B1ADA1; border-radius: 8px; padding: 10px 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 8px; }
+                        .card { border: 1px solid #B1ADA1; border-radius: 0 0 10px 0; padding: 10px 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 8px; }
                         .top { display: flex; justify-content: space-between; align-items: center; }
                         .title { font-weight: 600; font-size: 13px; color: #C15F3C; }
                         .stats { display: flex; gap: 12px; font-size: 12px; color: #6E6B65; }
                         .stats strong { color: #1F1E1D; }
-                        .badge { padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; background: ${badge.color === 'red' ? '#ef4444' : badge.color === 'orange' ? '#f97316' : badge.color === 'yellow' ? '#eab308' : '#16a34a'}; color: #fff; }
+                        .badge { padding: 2px 6px; border-radius: 0 0 5px 0; font-size: 11px; font-weight: 600; background: ${badge.color === 'red' ? '#ef4444' : badge.color === 'orange' ? '#f97316' : badge.color === 'yellow' ? '#eab308' : '#16a34a'}; color: #fff; }
                       </style>
                     </head>
                     <body>
                       <div class="card">
                         <div class="top">
-                          <span class="title">🛡️ MCP Manifest Security</span>
+                          <span class="title">MCP Manifest Security</span>
                           <span class="badge">${badge.label.toUpperCase()} (${report.summary.riskScore}/100)</span>
                         </div>
                         <div class="stats">
@@ -720,7 +790,15 @@ export default function ScanReport({ report, rawManifestInput }: ScanReportProps
                 className="btn-sm btn-primary"
                 onClick={handleCopyEmbed}
               >
-                {copiedEmbed ? '✓ Code Copied!' : '📋 Copy Embed Code'}
+                {copiedEmbed ? (
+                  <>
+                    <Icon name="check" size={14} /> Code Copied!
+                  </>
+                ) : (
+                  <>
+                    <Icon name="copy" size={14} /> Copy Embed Code
+                  </>
+                )}
               </button>
             </div>
           </div>
