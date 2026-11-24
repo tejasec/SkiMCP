@@ -1,0 +1,21 @@
+// ANSI-colored, CI-friendly terminal status markers for CLI & Harvester
+export const symbols = {
+  audit: '\x1b[1m\x1b[36m[AUDIT]\x1b[0m',
+  shield: '\x1b[1m\x1b[32m[SEC]\x1b[0m',
+  crit: '\x1b[1m\x1b[31m[CRIT]\x1b[0m',
+  high: '\x1b[1m\x1b[31m[HIGH]\x1b[0m',
+  warn: '\x1b[1m\x1b[33m[WARN]\x1b[0m',
+  ok: '\x1b[1m\x1b[32m[OK]\x1b[0m',
+  clean: '\x1b[1m\x1b[32m[CLEAN]\x1b[0m',
+  fail: '\x1b[1m\x1b[31m[FAIL]\x1b[0m',
+  diff: '\x1b[1m\x1b[35m[DIFF]\x1b[0m',
+  added: '\x1b[32m[+]\x1b[0m',
+  removed: '\x1b[31m[-]\x1b[0m',
+  modified: '\x1b[33m[~]\x1b[0m',
+  sub: '  ->',
+  pkg: '\x1b[34m[PKG]\x1b[0m',
+  stats: '\x1b[34m[STATS]\x1b[0m',
+  saved: '\x1b[32m[SAVED]\x1b[0m',
+  seed: '\x1b[36m[START]\x1b[0m',
+  arrow: '->',
+} as const;

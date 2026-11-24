@@ -826,19 +826,19 @@ export function deriveTrustLevel(report: ScanReport): 'verified' | 'caution' | '
 
 // ── Main Harvester Routine ───────────────────────────────────────────────
 export async function harvestAndBuildDirectory(options: { onlineFetch?: boolean } = {}): Promise<CuratedDirectoryDataset> {
-  console.log('🌱 Starting MCP Curated Trust Directory Harvester...');
+  console.log('[START] Starting MCP Curated Trust Directory Harvester...');
 
   if (options.onlineFetch) {
-    console.log('🌐 Attempting online check of awesome-mcp-servers...');
+    console.log('[NET] Attempting online check of awesome-mcp-servers...');
     try {
       const res = await fetch('https://raw.githubusercontent.com/punkpeye/awesome-mcp-servers/main/README.md', {
         signal: AbortSignal.timeout(4000),
       });
       if (res.ok) {
-        console.log('✅ Connected to upstream ecosystem list successfully.');
+        console.log('[OK] Connected to upstream ecosystem list successfully.');
       }
     } catch {
-      console.log('ℹ️ Offline or upstream timeout; continuing with comprehensive curated ecosystem corpus.');
+      console.log('[INFO] Offline or upstream timeout; continuing with comprehensive curated ecosystem corpus.');
     }
   }
 
@@ -917,13 +917,13 @@ export async function harvestAndBuildDirectory(options: { onlineFetch?: boolean 
   await fs.writeFile(targetPathFrontend, JSON.stringify(dataset, null, 2), 'utf-8');
   await fs.writeFile(targetPathBackend, JSON.stringify(dataset, null, 2), 'utf-8');
 
-  console.log(`✅ Harvest complete!`);
-  console.log(`📦 Total Servers Audited: ${servers.length}`);
-  console.log(`🛡️  Verified Safe: ${verifiedCount}`);
-  console.log(`⚠️  Caution: ${cautionCount}`);
-  console.log(`🚨 Dangerous / Avoid: ${dangerousCount}`);
-  console.log(`📊 Ecosystem Avg Risk: ${avgRiskScore}/100`);
-  console.log(`💾 Saved to: ${targetPathFrontend}`);
+  console.log(`[OK] Harvest complete!`);
+  console.log(`[PKG] Total Servers Audited: ${servers.length}`);
+  console.log(`[SAFE] Verified Safe: ${verifiedCount}`);
+  console.log(`[WARN] Caution: ${cautionCount}`);
+  console.log(`[CRIT] Dangerous / Avoid: ${dangerousCount}`);
+  console.log(`[STATS] Ecosystem Avg Risk: ${avgRiskScore}/100`);
+  console.log(`[SAVED] Saved to: ${targetPathFrontend}`);
 
   return dataset;
 }
@@ -932,7 +932,7 @@ export async function harvestAndBuildDirectory(options: { onlineFetch?: boolean 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const isOnline = process.argv.includes('--online');
   harvestAndBuildDirectory({ onlineFetch: isOnline }).catch((err) => {
-    console.error('❌ Harvester failed:', err);
+    console.error('[ERR] Harvester failed:', err);
     process.exit(1);
   });
 }

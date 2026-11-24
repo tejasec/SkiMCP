@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { scanManifest, diffManifests, hardenManifest } from './scanner';
 import type { Severity, Finding, ScanReport } from './scanner/types';
+import { symbols } from './symbols';
 
 // ANSI styling helpers (works universally in modern terminals)
 const c = {
@@ -37,7 +38,7 @@ ${c.bold}USAGE:${c.reset}
   skimcp <command> [options]
 
 ${c.bold}COMMANDS:${c.reset}
-  ${c.green}scan <path-or-url>${c.reset}       Audit an MCP manifest (JSON, YAML, JSONL, Claude config)
+  ${c.green}scan <path-or-url>${c.reset}       Audit an MCP manifest (JSON, YAML, JSONL, Desktop config)
   ${c.green}diff <baseline> <target>${c.reset}  Compare baseline (v1) vs target (v2) for permission drift
   ${c.green}harden <path>${c.reset}             Sanitize manifest (strips prompt injections, clamps schemas)
   ${c.green}version${c.reset}                  Print version information
@@ -50,8 +51,8 @@ ${c.bold}OPTIONS:${c.reset}
   ${c.yellow}--help, -h${c.reset}                Show this help message
 
 ${c.bold}EXAMPLES:${c.reset}
-  ${c.dim}# Scan a local Claude Desktop configuration and break CI on high or critical findings:${c.reset}
-  skimcp scan ~/.config/Claude/claude_desktop_config.json --fail-on=high
+  ${c.dim}# Scan a local desktop configuration and break CI on high or critical findings:${c.reset}
+  skimcp scan ./desktop_config.json --fail-on=high
 
   ${c.dim}# Compare baseline version against PR version for permission escalation:${c.reset}
   skimcp diff ./manifest-v1.json ./manifest-v2.json
@@ -151,14 +152,14 @@ export async function runCli(args: string[]): Promise<number> {
       else console.log(md);
     } else {
       // Table formatting
-      console.log(`\n${c.bold}🛡️  MCP Tool Manifest Risk Audit${c.reset}`);
+      console.log(`\n${symbols.audit} ${c.bold}MCP Tool Manifest Risk Audit${c.reset}`);
       console.log(`${c.dim}Target:${c.reset} ${target}`);
       console.log(`${c.dim}SHA-256:${c.reset} ${report.manifestFingerprint}`);
       console.log(`${c.bold}Risk Score:${c.reset} ${renderAsciiGauge(report.summary.riskScore)}`);
       console.log(`${c.dim}Tools Declared:${c.reset} ${report.tools.length} | ${c.dim}Findings:${c.reset} ${report.findings.length}\n`);
 
       if (report.findings.length === 0) {
-        console.log(`${c.green}${c.bold}✔ No dangerous patterns detected. Clean manifest!${c.reset}\n`);
+        console.log(`${symbols.clean} ${c.green}${c.bold}No dangerous patterns detected. Clean manifest!${c.reset}\n`);
       } else {
         console.log(`${c.bold}SECURITY FINDINGS:${c.reset}`);
         console.log('─'.repeat(80));
@@ -178,7 +179,7 @@ export async function runCli(args: string[]): Promise<number> {
       const minWeight = SEVERITY_WEIGHTS[failOn];
       const hasFailingIssue = report.findings.some(f => SEVERITY_WEIGHTS[f.severity] >= minWeight);
       if (hasFailingIssue) {
-        console.error(`${c.red}${c.bold}✖ CI/CD Gate Failed:${c.reset} Findings detected at or above threshold '${failOn}'.`);
+        console.error(`${symbols.fail} ${c.red}${c.bold}CI/CD Gate Failed:${c.reset} Findings detected at or above threshold '${failOn}'.`);
         return 1;
       }
     }
@@ -203,7 +204,7 @@ export async function runCli(args: string[]): Promise<number> {
       if (format === 'json') {
         console.log(JSON.stringify(diff, null, 2));
       } else {
-        console.log(`\n${c.bold}🔀 MCP Agent Permission Diff${c.reset}`);
+        console.log(`\n${symbols.diff} ${c.bold}MCP Agent Permission Diff${c.reset}`);
         console.log(`${c.dim}Baseline (v1):${c.reset} ${baseTarget} (${diff.baselineScore}/100)`);
         console.log(`${c.dim}Target   (v2):${c.reset} ${newTarget} (${diff.targetScore}/100)`);
 
@@ -211,7 +212,7 @@ export async function runCli(args: string[]): Promise<number> {
         const deltaSign = diff.riskDelta > 0 ? `+${diff.riskDelta}` : `${diff.riskDelta}`;
         console.log(`${c.bold}Risk Delta:${c.reset} ${deltaColor}${deltaSign} (${diff.status.toUpperCase()})${c.reset}\n`);
 
-        console.log(`Summary: ${c.green}+${diff.summary.addedCount} added${c.reset}, ${c.red}-${diff.summary.removedCount} removed${c.reset}, ${c.yellow}⚠ ${diff.summary.modifiedCount} modified (${diff.summary.escalatedCount} escalated)${c.reset}, ${c.dim}${diff.summary.unchangedCount} unchanged${c.reset}\n`);
+        console.log(`Summary: ${c.green}+${diff.summary.addedCount} added${c.reset}, ${c.red}-${diff.summary.removedCount} removed${c.reset}, ${c.yellow}[MOD] ${diff.summary.modifiedCount} modified (${diff.summary.escalatedCount} escalated)${c.reset}, ${c.dim}${diff.summary.unchangedCount} unchanged${c.reset}\n`);
 
         if (diff.toolsAdded.length > 0) {
           console.log(`${c.green}${c.bold}TOOLS ADDED:${c.reset}`);
@@ -230,7 +231,7 @@ export async function runCli(args: string[]): Promise<number> {
             console.log(`  * ${c.yellow}${m.name}${c.reset}${escTag}`);
             for (const ch of m.propertyChanges) {
               const chColor = ch.severity === 'escalated' ? c.red : c.dim;
-              console.log(`    ${chColor}↳ ${ch.description}${c.reset}`);
+              console.log(`    ${chColor}-> ${ch.description}${c.reset}`);
             }
           }
         }
@@ -260,16 +261,16 @@ export async function runCli(args: string[]): Promise<number> {
 
       if (outputPath) {
         fs.writeFileSync(outputPath, JSON.stringify(hardened.hardenedManifest, null, 2), 'utf-8');
-        console.log(`${c.green}✔ Hardened manifest saved to:${c.reset} ${outputPath}`);
+        console.log(`${symbols.ok} ${c.green}Hardened manifest saved to:${c.reset} ${outputPath}`);
       } else if (format === 'json') {
         console.log(JSON.stringify(hardened.hardenedManifest, null, 2));
       } else {
-        console.log(`\n${c.bold}🛡️  Hardened Manifest Generated${c.reset}`);
+        console.log(`\n${symbols.shield} ${c.bold}Hardened Manifest Generated${c.reset}`);
         console.log(`Before Risk Score: ${c.red}${hardened.beforeScore}/100${c.reset}`);
         console.log(`After Risk Score:  ${c.green}${hardened.afterScore}/100${c.reset} (${c.green}-${hardened.scoreReduction} risk points${c.reset})\n`);
         console.log(`${c.bold}Applied Security Fixes (${hardened.changesApplied.length}):${c.reset}`);
         for (const ch of hardened.changesApplied) {
-          console.log(`  ✔ [${c.cyan}${ch.toolName}${c.reset}] ${ch.description}`);
+          console.log(`  ${symbols.ok} [${c.cyan}${ch.toolName}${c.reset}] ${ch.description}`);
         }
       }
       return 0;
