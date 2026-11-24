@@ -1,0 +1,9 @@
+# Default owners
+* @tejasec
+
+# Critical paths
+/.github/ @tejasec
+/action.yml @tejasec
+/backend/src/lib/ @tejasec
+/backend/src/ @tejasec
+/scripts/ @tejasec
