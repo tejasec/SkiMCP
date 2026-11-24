@@ -1,0 +1,6 @@
+backend/test
+coverage
+*.log
+.DS_Store
+*.md
+!README.md
