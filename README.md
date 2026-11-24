@@ -40,37 +40,6 @@ docker run --rm -p 8080:8080 skimcp
 
 ---
 
-## Architecture
-
-```mermaid
-flowchart TD
-    subgraph Inputs["Multi-Source Ingestion"]
-        A1["JSON / .jsonl / YAML"] --> P["_parser.ts"]
-        A2["claude_desktop_config.json"] --> P
-        A3["Live URL (HTTP / SSE)"] --> S["_ssrf.ts"] --> F["_urlFetcher.ts"] --> P
-    end
-
-    subgraph Core["Core Security Engine"]
-        P --> H["_fingerprint.ts<br/>(RFC 8785 Canonical SHA-256)"]
-        H --> R["_ruleEngine.ts<br/>(11 Security Rules)"]
-        R --> SC["_scorer.ts<br/>(Threat Breakdown)"]
-    end
-
-    subgraph Differentiators["Advanced Engines"]
-        P --> D["_diff.ts<br/>(Permission Drift Detector)"]
-        P --> SAN["_sanitizer.ts<br/>(One-Click Hardening)"]
-    end
-
-    subgraph Outputs["Artifacts & UI"]
-        SC --> UI1["Live Dashboard & Threat Breakdown Meters"]
-        SC --> EXP["MCP_SECURITY_REPORT.md & JSON"]
-        SC --> BDG["Dynamic Shields.io Badge"]
-        D --> UI2["Visual Permission Diff UI"]
-        SAN --> UI3["Sanitized Manifest JSON"]
-        SC --> CLI["Terminal CLI (exit codes 0/1/2)"]
-    end
-```
-
 ---
 
 ## Core Capabilities
