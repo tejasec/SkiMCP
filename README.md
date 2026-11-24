@@ -109,8 +109,3 @@ npm run build
 ```
 
 ---
-
-## Documentation
-
-- [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md) — Comprehensive technical reference detailing system architecture, hashing guarantees, detection rules, API specs, and verification results.
-- [BLUEPRINT.md](BLUEPRINT.md) — Architectural boundaries, hard constraints, and API contracts.
