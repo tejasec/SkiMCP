@@ -19,7 +19,7 @@ The **MCP Tool Manifest Risk Scanner** addresses these risks with a static, dete
 Users can provide MCP manifests in any format common to the agent ecosystem:
 - **Claude Desktop Configuration**: Upload or paste `claude_desktop_config.json`. The scanner automatically discovers declared MCP servers, parses executable binaries (`npx`, `bash`, `docker`), extracts CLI arguments, and audits declared environment variables for embedded API keys or credentials.
 - **Multi-Format Parsing**: Supports standard JSON (`tools/list` responses), bare arrays, JSON Lines (`.jsonl`), and YAML (`.yaml`, `.yml`).
-- **Live MCP Server URL Auditing**: Switch to the *"🌐 Live Server URL (HTTP / SSE)"* tab, enter an endpoint (e.g., `https://mcp.example.com/sse`), and execute a live audit. The scanner handles HTTP GET, JSON-RPC 2.0 `tools/list` POST, and Server-Sent Events (SSE) handshakes in real time.
+- **Live MCP Server URL Auditing**: Switch to the *"Live Server URL (HTTP / SSE)"* tab, enter an endpoint (e.g., `https://mcp.example.com/sse`), and execute a live audit. The scanner handles HTTP GET, JSON-RPC 2.0 `tools/list` POST, and Server-Sent Events (SSE) handshakes in real time.
 - **Built-in Showcase Presets**: One-click preset buttons allow instantaneous demonstration of realistic configurations:
   1. `GitHub (Official)`: Safe, scoped reference API with strict required parameters.
   2. `Postgres (Read-Only)`: Secure parameterized SQL client.
@@ -27,30 +27,30 @@ Users can provide MCP manifests in any format common to the agent ecosystem:
   4. `Poisoned Fetcher`: Covert prompt injection attempting credential exfiltration of SSH keys and `.env` files.
   5. `Rug-Pull Evolution`: Multi-version capability expansion showing permission escalation.
 
-### 2.2. Multi-Dimensional 4-Pillar Risk Visualizer
-Rather than presenting a monolithic, opaque risk number, the scanner breaks findings into four distinct security pillars, each equipped with visual progress meters:
+### 2.2. Multi-Dimensional Threat Breakdown Visualizer
+Rather than presenting a monolithic, opaque risk number, the scanner breaks findings into distinct security categories, each equipped with visual progress meters:
 1. **Execution Safety**: Evaluates arbitrary command execution (`run_command`, `eval`, `system`) and system binary impersonation (`ls`, `curl`).
 2. **Data & Network Boundary**: Evaluates unconstrained filesystem paths, sensitive directory access (`/etc/passwd`, `~/.ssh`), credential leaks, and unrestricted HTTP egress.
 3. **Prompt & AI Integrity**: Evaluates zero-width steganography characters, directional Unicode overrides (Trojan Source attacks), and concealed imperative instructions (`<IMPORTANT>`, `<SYSTEM>`).
 4. **Privilege & Schema Scope**: Evaluates loose schema boundaries (`additionalProperties: true`), missing required constraints, and vague/minimal descriptions.
 
 ### 2.3. Automated Hardened Manifest Generator ("One-Click Remediation")
-When an audit discovers vulnerabilities, users can click **"🛡️ Generate Hardened Manifest"** to open an interactive remediation workspace:
-- **Score Delta Comparison**: Displays real-time risk reduction (e.g., `85/100 ➔ 15/100 (-70 pts)`).
+When an audit discovers vulnerabilities, users can click **"Generate Hardened Manifest"** to open an interactive remediation workspace:
+- **Score Delta Comparison**: Displays real-time risk reduction (e.g., `85/100 -> 15/100 (-70 pts)`).
 - **Itemized Checklist**: Lists every security fix automatically applied (e.g., sanitized prompt injections, clamped schemas, injected regex constraints).
 - **Export & Copy**: Provides one-click buttons to copy the sanitized JSON or download a ready-to-deploy hardened manifest file.
 
 ### 2.4. Agent Permission Diff & Drift Detector
-By navigating to the **"🔀 Permission Diff"** tab, teams can compare a baseline manifest (`v1`) against a target pull request (`v2`):
+By navigating to the **"Permission Diff"** tab, teams can compare a baseline manifest (`v1`) against a target pull request (`v2`):
 - **Risk Delta Badge**: Computes the net risk difference, displaying badges such as `+35 Risk Increase (ESCALATED)` or `-20 Risk Reduction (HARDENED)`.
 - **Structural Classification**: Categorizes tools into `Added`, `Removed`, `Modified`, and `Unchanged`.
-- **Property Inspector**: Highlights fine-grained schema mutations (e.g., `additionalProperties: false ➔ true`, newly introduced parameters, or altered descriptions).
+- **Property Inspector**: Highlights fine-grained schema mutations (e.g., `additionalProperties: false -> true`, newly introduced parameters, or altered descriptions).
 
 ### 2.5. Curated MCP Trust Directory & Ecosystem Harvester
 An integrated catalog of 16 pre-audited MCP servers across 6 core categories (`System`, `Developer Tools`, `Databases`, `Web & Search`, `Productivity`, `Cloud & DevOps`):
 - **Ecosystem Health Metrics**: Real-time summary displaying total servers, verified safe count, caution count, dangerous/avoid count, and average risk score.
-- **Search & Filters**: Instant client-side filtering by category, search keywords, or trust tier (`✅ Verified Safe`, `⚠️ Caution`, `🚨 Avoid / High Risk`).
-- **1-Click Audit**: Clicking **"🔍 Inspect in Scanner"** loads the server's manifest into the Live Scanner and executes a fresh audit immediately.
+- **Search & Filters**: Instant client-side filtering by category, search keywords, or trust tier (`Verified Safe`, `Caution`, `Avoid / High Risk`).
+- **1-Click Audit**: Clicking **"Inspect in Scanner"** loads the server's manifest into the Live Scanner and executes a fresh audit immediately.
 
 ### 2.6. Standalone CLI Runner & CI/CD Pipeline Gate
 Developers can audit manifests directly in their terminal workflows, pre-commit hooks, or CI/CD pipelines without launching the web server:
@@ -85,7 +85,7 @@ Provides session persistence without requiring an external database:
 Allows MCP server developers and repositories to embed live, audited risk summaries on documentation sites or READMEs:
 - **URL Base64 Encoding**: Encodes the scan summary into URL hash/query parameters to adhere strictly to the zero-database architectural constraint.
 - **Dedicated Route**: Accessing `/embed` renders a lightweight, responsive score and badge card.
-- **Modal Snippet Generator**: 1-click "🔗 Embed Widget" modal in report view generates copyable `<iframe>` HTML with live preview.
+- **Modal Snippet Generator**: 1-click "Embed Widget" modal in report view generates copyable `<iframe>` HTML with live preview.
 
 ### 2.11. Dynamic Runtime Canary Sandbox (F-8)
 Safe, opt-in dynamic runtime verification for live MCP server endpoints:
@@ -225,7 +225,7 @@ The diff engine in `backend/src/scanner/_diff.ts` takes two manifests (`baseline
 1. **Tool Reconciliation**: Categorizes tools as `Added`, `Removed`, `Modified`, or `Unchanged` by matching names.
 2. **Schema Property Walking**: Traverses nested schema trees, recording exact property path changes (e.g., `inputSchema.properties.path.pattern`).
 3. **Escalation Classification**: Identifies changes that expand privileges:
-   - Setting `additionalProperties: false ➔ true` (allowing arbitrary parameter injection).
+   - Setting `additionalProperties: false -> true` (allowing arbitrary parameter injection).
    - Removing parameter regex patterns.
    - Introducing new filesystem or command execution parameters.
    - Altering tool descriptions to introduce prompt injection directives.
@@ -271,11 +271,11 @@ curl -X POST http://localhost:8080/api/scan-url \
   [![MCP Security](https://img.shields.io/badge/MCP%20Risk-Critical-red)]()
   ```
   The badge label and color dynamically update based on the scan score:
-  - `Critical` (≥ 80 pts) ➔ `red`
-  - `High` (50–79 pts) ➔ `orange`
-  - `Medium` (20–49 pts) ➔ `yellow`
-  - `Low` (1–19 pts) ➔ `brightgreen`
-  - `Clean` (0 pts) ➔ `brightgreen`
+  - `Critical` (≥ 80 pts) -> `red`
+  - `High` (50–79 pts) -> `orange`
+  - `Medium` (20–49 pts) -> `yellow`
+  - `Low` (1–19 pts) -> `brightgreen`
+  - `Clean` (0 pts) -> `brightgreen`
 
 ### 7.3. Standalone CLI Usage (`backend/src/cli.ts`)
 The scanner includes a standalone CLI binary:
@@ -316,7 +316,7 @@ skimcp harden ./risky-manifest.json --output ./hardened-manifest.json
 | `backend/src/scanner/_rules/resourcePromptInjection.ts` | Rules | **New** | Opt-in rule auditing MCP resources and prompt templates for prompt injection directives. |
 | `backend/src/scanner/_rules/index.ts` | Rules | Extended | Registry of all 11 active scanning rules. |
 | `backend/src/scanner/_ruleEngine.ts` | Engine | Extended | Evaluates rules across tools, attaches tool fingerprints, and runs opt-in checks. |
-| `backend/src/scanner/_scorer.ts` | Engine | Extended | Computes weighted risk scores, categorizes severity, and assigns 4-pillar ratings. |
+| `backend/src/scanner/_scorer.ts` | Engine | Extended | Computes weighted risk scores, categorizes severity, and assigns threat breakdown ratings. |
 | `backend/src/scanner/_diff.ts` | Engine | **New** | Structural manifest diff engine and permission escalation detector. |
 | `backend/src/scanner/_sanitizer.ts` | Engine | **New** | One-click manifest hardening and prompt injection sanitizer. |
 | `backend/src/scanner/index.ts` | Public API | Extended | Public facade exporting `scanManifest`, `diffManifests`, and `hardenManifest`. |
@@ -332,11 +332,11 @@ skimcp harden ./risky-manifest.json --output ./hardened-manifest.json
 | `frontend/src/lib/api.ts` | Frontend SDK | Extended | Typed client methods: `scanManifest`, `scanUrl`, `diffManifests`, `hardenManifest`. |
 | `frontend/src/lib/exportReport.ts` | Frontend SDK | **New** | Generates standalone Markdown reports, JSON downloads, and dynamic Shields.io badges. |
 | `frontend/src/components/ManifestInput.tsx` | UI | Extended | Ingestion UI with mode tabs, file upload, 5 showcase presets, and opt-in toggles. |
-| `frontend/src/components/ScanReport.tsx` | UI | Extended | Risk report view with 4-pillar meters, lockfile table, and hardening modal. |
+| `frontend/src/components/ScanReport.tsx` | UI | Extended | Risk report view with threat breakdown meters, lockfile table, and hardening modal. |
 | `frontend/src/components/PermissionDiff.tsx` | UI | **New** | Interactive two-pane manifest comparison view with live risk score delta badges. |
 | `frontend/src/components/TrustDirectory.tsx` | UI | **New** | Browsable catalog of 16 pre-audited servers with search, filters, and 1-click inspect. |
 | `frontend/src/App.tsx` | UI Shell | Extended | Top-level view switcher navigation (`Scanner`, `Diff`, `Trust Directory`). |
-| `frontend/src/styles.css` | UI Styling | Extended | Styling for diff views, 4-pillar meters, hardening modals, and badges. |
+| `frontend/src/styles.css` | UI Styling | Extended | Styling for diff views, threat breakdown meters, hardening modals, and badges. |
 | `backend/test/*.test.ts` | Test Suite | Extended | 55 automated tests covering all parser, fingerprint, rule, SSRF, diff, and CLI behaviors. |
 
 ---
@@ -478,10 +478,10 @@ $ npm run build
 ```
 **Output Highlights:**
 ```
-🌱 Starting MCP Curated Trust Directory Harvester...
-✅ Harvest complete!
-📦 Total Servers Audited: 16 (8 Verified Safe, 2 Caution, 6 Avoid)
-💾 Saved to: frontend/src/data/trust-directory.json
+[START] Starting MCP Curated Trust Directory Harvester...
+[OK] Harvest complete!
+[STATS] Total Servers Audited: 16 (8 Verified Safe, 2 Caution, 6 Avoid)
+[SAVED] Saved to: frontend/src/data/trust-directory.json
 ✓ 39 modules transformed.
 dist/index.html                   0.41 kB │ gzip:  0.27 kB
 dist/assets/index-_Ef_Ethk.css   27.40 kB │ gzip:  5.20 kB

@@ -9,7 +9,7 @@ A deterministic, rule-based security auditing and drift-detection engine for **M
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Web Application
 ```bash
@@ -40,7 +40,7 @@ docker run --rm -p 8080:8080 skimcp
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart TD
@@ -53,7 +53,7 @@ flowchart TD
     subgraph Core["Core Security Engine"]
         P --> H["_fingerprint.ts<br/>(RFC 8785 Canonical SHA-256)"]
         H --> R["_ruleEngine.ts<br/>(11 Security Rules)"]
-        R --> SC["_scorer.ts<br/>(4 Security Pillars)"]
+        R --> SC["_scorer.ts<br/>(Threat Breakdown)"]
     end
 
     subgraph Differentiators["Advanced Engines"]
@@ -62,7 +62,7 @@ flowchart TD
     end
 
     subgraph Outputs["Artifacts & UI"]
-        SC --> UI1["Live Dashboard & 4-Pillar Meters"]
+        SC --> UI1["Live Dashboard & Threat Breakdown Meters"]
         SC --> EXP["MCP_SECURITY_REPORT.md & JSON"]
         SC --> BDG["Dynamic Shields.io Badge"]
         D --> UI2["Visual Permission Diff UI"]
@@ -73,7 +73,7 @@ flowchart TD
 
 ---
 
-## 🛡️ Core Capabilities
+## Core Capabilities
 
 ### 1. Multi-Source Manifest Ingestion
 - **Standard JSON & Arrays**: Supports official MCP `tools/list` payloads and raw tool arrays.
@@ -87,7 +87,7 @@ flowchart TD
 
 ### 3. Agent Permission Diff & Drift Detector (`POST /api/diff`)
 - Compares a **Baseline Manifest (v1)** against a **Target Pull Request (v2)**.
-- Flags added tools, removed tools, description changes, and permission escalations (e.g., `additionalProperties: false ➔ true`, unconstrained path parameters).
+- Flags added tools, removed tools, description changes, and permission escalations (e.g., `additionalProperties: false -> true`, unconstrained path parameters).
 - Computes a net **Risk Score Delta** (`+35 ESCALATED` vs `-20 HARDENED`).
 
 ### 4. One-Click Hardened Manifest Generator (`POST /api/harden`)
@@ -103,7 +103,7 @@ flowchart TD
 
 ---
 
-## 🔍 Threat Detection Rules
+## Threat Detection Rules
 
 | Rule | Severity | Category | Detects |
 |---|---|---|---|
@@ -121,7 +121,7 @@ flowchart TD
 
 ---
 
-## 🧪 Testing & Verification
+## Testing & Verification
 
 Run the automated test suite:
 ```bash
@@ -141,7 +141,7 @@ npm run build
 
 ---
 
-## 📄 Documentation
+## Documentation
 
 - [IMPLEMENTATION_REPORT.md](IMPLEMENTATION_REPORT.md) — Comprehensive technical reference detailing system architecture, hashing guarantees, detection rules, API specs, and verification results.
 - [BLUEPRINT.md](BLUEPRINT.md) — Architectural boundaries, hard constraints, and API contracts.
