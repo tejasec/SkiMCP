@@ -283,17 +283,17 @@ export default function ManifestInput({
         <div className="mode-tabs">
           <button
             type="button"
-            className={`tab-btn ${scanMode === 'manifest' ? 'active' : ''}`}
-            onClick={() => onScanModeChange('manifest')}
-          >
-            <Icon name="file-json" size={15} /> Manifest (JSON / YAML / JSONL / Config)
-          </button>
-          <button
-            type="button"
             className={`tab-btn ${scanMode === 'url' ? 'active' : ''}`}
             onClick={() => onScanModeChange('url')}
           >
             <Icon name="globe" size={15} /> Live Server URL (HTTP / SSE)
+          </button>
+          <button
+            type="button"
+            className={`tab-btn ${scanMode === 'manifest' ? 'active' : ''}`}
+            onClick={() => onScanModeChange('manifest')}
+          >
+            <Icon name="file-json" size={15} /> Manifest (JSON / YAML / JSONL / Config)
           </button>
         </div>
       </div>

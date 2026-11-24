@@ -42,7 +42,7 @@ export default function App() {
   const [activeView, setActiveView] = useState<ActiveView>('scanner');
   const [manifest, setManifest] = useState('');
   const [urlValue, setUrlValue] = useState('');
-  const [scanMode, setScanMode] = useState<ScanMode>('manifest');
+  const [scanMode, setScanMode] = useState<ScanMode>('url');
   const [scanResourcesAndPrompts, setScanResourcesAndPrompts] = useState(false);
   const [runCanaryProbes, setRunCanaryProbes] = useState(false);
   const [scanning, setScanning] = useState(false);
