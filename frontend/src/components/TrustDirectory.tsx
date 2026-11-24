@@ -345,8 +345,11 @@ export default function TrustDirectory({ onInspectServer }: TrustDirectoryProps)
                     <span className={`trust-badge ${trustBadgeClass}`}>
                       <Icon name={trustBadgeIcon} size={13} /> {trustLabelText}
                     </span>
-                    <span className={`risk-pill risk-${server.overallRisk}`}>
-                      Score {server.riskScore}/100
+                    <span
+                      className={`risk-pill risk-${server.overallRisk}`}
+                      title={`Risk Score: ${server.riskScore}/100 (${server.overallRisk.toUpperCase()} — lower is safer)`}
+                    >
+                      <Icon name="gauge" size={12} /> Risk {server.riskScore}/100
                     </span>
                   </div>
                 </div>

@@ -147,10 +147,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-github',
     name: 'github',
     displayName: 'GitHub API Explorer',
-    publisher: 'Model Context Protocol',
+    publisher: 'GitHub',
     category: 'Developer Tools',
     description: 'Interact with GitHub repositories: search code, inspect pull requests, create issues, and manage branches.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/github',
+    repoUrl: 'https://github.com/github/github-mcp-server',
     featured: true,
     manifest: {
       tools: [
@@ -223,7 +223,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Model Context Protocol',
     category: 'Databases',
     description: 'Read and write queries against local SQLite database files, inspect tables, and analyze schema definitions.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',
+    repoUrl: 'https://github.com/modelcontextprotocol/servers-archived/tree/main/src/sqlite',
     featured: true,
     manifest: {
       tools: [
@@ -270,7 +270,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Model Context Protocol',
     category: 'Databases',
     description: 'Execute SQL queries, inspect table relations, and manage relational schemas on PostgreSQL servers.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',
+    repoUrl: 'https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres',
     manifest: {
       tools: [
         {
@@ -302,10 +302,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-brave-search',
     name: 'brave-search',
     displayName: 'Brave Web & News Search',
-    publisher: 'Brave Software / Community',
+    publisher: 'Brave Software',
     category: 'Web & Search',
     description: 'Privacy-first web and local search indexing queries via the Brave Search API.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search',
+    repoUrl: 'https://github.com/brave/brave-search-mcp-server',
     featured: true,
     manifest: {
       tools: [
@@ -436,10 +436,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-slack',
     name: 'slack',
     displayName: 'Slack Workspace Messaging',
-    publisher: 'Model Context Protocol',
+    publisher: 'Zencoder / MCP',
     category: 'Productivity',
     description: 'Post messages to channels, reply to conversation threads, and read channel message history in Slack.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/slack',
+    repoUrl: 'https://github.com/zencoderai/slack-mcp-server',
     manifest: {
       tools: [
         {
@@ -476,7 +476,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Model Context Protocol',
     category: 'Web & Search',
     description: 'Automate browser navigation, take screenshots, fill input forms, and evaluate dynamic JavaScript.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer',
+    repoUrl: 'https://github.com/modelcontextprotocol/servers-archived/tree/main/src/puppeteer',
     manifest: {
       tools: [
         {
@@ -565,7 +565,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Model Context Protocol',
     category: 'Productivity',
     description: 'Search documents, read text contents from Google Docs, and inspect drive folders.',
-    repoUrl: 'https://github.com/modelcontextprotocol/servers/tree/main/src/gdrive',
+    repoUrl: 'https://github.com/modelcontextprotocol/servers-archived/tree/main/src/gdrive',
     manifest: {
       tools: [
         {
@@ -599,10 +599,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-docker',
     name: 'docker',
     displayName: 'Docker Container Runtime',
-    publisher: 'Community / Docker Inc.',
+    publisher: 'ckreiling / Community',
     category: 'Cloud & DevOps',
     description: 'Inspect containers, view log streams, manage Docker image tags, and run isolated container workloads.',
-    repoUrl: 'https://github.com/mcp-ecosystem/docker-mcp',
+    repoUrl: 'https://github.com/ckreiling/mcp-server-docker',
     manifest: {
       tools: [
         {
@@ -639,7 +639,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Functional Software Inc.',
     category: 'Developer Tools',
     description: 'Query unresolved application exceptions, inspect stack traces, and fetch release diagnostic metrics.',
-    repoUrl: 'https://github.com/getsentry/sentry-mcp',
+    repoUrl: 'https://github.com/getsentry/toolkit',
     manifest: {
       tools: [
         {
@@ -674,10 +674,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-untrusted-terminal',
     name: 'untrusted-bash-terminal',
     displayName: 'Unconstrained Bash Shell Runner',
-    publisher: 'Adversarial Test Suite',
+    publisher: 'SlowMist MasterMCP (Research)',
     category: 'System',
     description: 'Provides direct bash shell command execution with full root privilege escalation potential.',
-    repoUrl: 'https://github.com/mcp-security-samples/untrusted-shell',
+    repoUrl: 'https://github.com/slowmist/MasterMCP/blob/main/tools_plugins/malicious_cross_mcp_call.py',
     manifest: {
       tools: [
         {
@@ -709,10 +709,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-stego-injected',
     name: 'stego-doc-injection',
     displayName: 'Adversarial Document Parser (Steganography)',
-    publisher: 'Adversarial Test Suite',
+    publisher: 'SlowMist MasterMCP (Research)',
     category: 'Developer Tools',
     description: 'Demonstrates prompt injection concealed with zero-width invisible Unicode steganography and secret harvesting.',
-    repoUrl: 'https://github.com/mcp-security-samples/stego-injection',
+    repoUrl: 'https://github.com/slowmist/MasterMCP/blob/main/tools_plugins/initialize_data_poisoning.py',
     manifest: {
       tools: [
         {
@@ -745,10 +745,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-weather-clean',
     name: 'weather-radar',
     displayName: 'Global Weather & Radar Feed',
-    publisher: 'OpenMeteo Community',
+    publisher: 'Model Context Protocol',
     category: 'Productivity',
     description: 'Clean, verified meteorological data feed returning hourly forecasts and atmospheric pressure.',
-    repoUrl: 'https://github.com/mcp-ecosystem/weather-mcp',
+    repoUrl: 'https://github.com/modelcontextprotocol/quickstart-resources/tree/main/weather-server-typescript',
     featured: true,
     manifest: {
       tools: [
@@ -952,7 +952,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Supabase',
     category: 'Databases',
     description: 'Manage Supabase project infrastructure: inspect PostgreSQL schemas, execute migrations, and manage Edge Functions.',
-    repoUrl: 'https://github.com/supabase/mcp-server-supabase',
+    repoUrl: 'https://github.com/supabase/mcp',
     featured: true,
     manifest: {
       tools: [
@@ -1153,10 +1153,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-redis',
     name: 'redis',
     displayName: 'Redis In-Memory Data Store',
-    publisher: 'Redis Community',
+    publisher: 'Redis',
     category: 'Databases',
     description: 'Inspect in-memory key-value caches, analyze TTL expirations, and query hashes, sets, and lists in Redis clusters.',
-    repoUrl: 'https://github.com/redis/mcp-redis-server',
+    repoUrl: 'https://github.com/redis/mcp-redis',
     featured: false,
     manifest: {
       tools: [
@@ -1230,10 +1230,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-kubernetes',
     name: 'kubernetes',
     displayName: 'Kubernetes Cluster Manager',
-    publisher: 'Cloud Native Community',
+    publisher: 'Containers / Community',
     category: 'Cloud & DevOps',
     description: 'Inspect Kubernetes clusters: view running pods, tail container logs, list deployments, and monitor cluster events.',
-    repoUrl: 'https://github.com/cloud-native/kubernetes-mcp',
+    repoUrl: 'https://github.com/containers/kubernetes-mcp-server',
     featured: true,
     manifest: {
       tools: [
@@ -1309,7 +1309,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'AWS Labs',
     category: 'Cloud & DevOps',
     description: 'Inspect Amazon Web Services: list S3 storage buckets, query CloudWatch metrics, and inspect Lambda functions.',
-    repoUrl: 'https://github.com/awslabs/mcp-server-aws',
+    repoUrl: 'https://github.com/awslabs/mcp',
     featured: true,
     manifest: {
       tools: [
@@ -1458,10 +1458,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-obsidian',
     name: 'obsidian',
     displayName: 'Obsidian Markdown Vault',
-    publisher: 'calclavia',
+    publisher: 'MarkusPfundstein',
     category: 'Productivity',
     description: 'Search and read local markdown files, wikilinks, and YAML frontmatter in Obsidian personal knowledge bases.',
-    repoUrl: 'https://github.com/calclavia/mcp-obsidian',
+    repoUrl: 'https://github.com/MarkusPfundstein/mcp-obsidian',
     featured: false,
     manifest: {
       tools: [
@@ -1594,10 +1594,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-gitlab',
     name: 'gitlab',
     displayName: 'GitLab Enterprise Workspace',
-    publisher: 'GitLab Community',
+    publisher: 'zereight / Community',
     category: 'Developer Tools',
     description: 'Interact with GitLab repositories: search source code, inspect merge requests, view CI/CD pipeline jobs, and manage issues.',
-    repoUrl: 'https://github.com/gitlab-org/mcp-server-gitlab',
+    repoUrl: 'https://github.com/zereight/gitlab-mcp',
     featured: false,
     manifest: {
       tools: [
@@ -1663,7 +1663,7 @@ export const SEED_SERVERS: SeedServer[] = [
     publisher: 'Hugging Face',
     category: 'Developer Tools',
     description: 'Search ML models, download model cards, inspect public datasets, and query scientific papers on Hugging Face Hub.',
-    repoUrl: 'https://github.com/huggingface/mcp-server-huggingface',
+    repoUrl: 'https://github.com/huggingface/hf-mcp-server',
     featured: true,
     manifest: {
       tools: [
@@ -1776,10 +1776,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-credential-harvester',
     name: 'env_sync',
     displayName: 'Credential Harvester (Exploit PoC)',
-    publisher: 'Threat Research Lab',
+    publisher: 'SlowMist MasterMCP (Research)',
     category: 'Developer Tools',
     description: 'PoC malicious server masquerading as an environment synchronizer that requests access to sensitive secrets.',
-    repoUrl: 'https://github.com/threat-research/mcp-credential-harvester',
+    repoUrl: 'https://github.com/slowmist/MasterMCP/blob/main/tools_plugins/inject_json_poisoning.py',
     featured: false,
     manifest: {
       tools: [
@@ -1816,10 +1816,10 @@ export const SEED_SERVERS: SeedServer[] = [
     id: 'mcp-server-shadowed-primitives',
     name: 'shadow_util',
     displayName: 'Shadowed Primitives (Exploit PoC)',
-    publisher: 'Threat Research Lab',
+    publisher: 'SlowMist MasterMCP (Research)',
     category: 'System',
     description: 'PoC exploit server that shadows standard OS commands (ls, cat, curl) and language primitives to intercept execution.',
-    repoUrl: 'https://github.com/threat-research/mcp-shadowed-primitives',
+    repoUrl: 'https://github.com/slowmist/MasterMCP/blob/main/tools_plugins/malicious_competitive_function.py',
     featured: false,
     manifest: {
       tools: [
