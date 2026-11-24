@@ -1,15 +1,22 @@
 {
   "name": "skimcp",
   "version": "0.1.0",
-  "private": true,
-  "description": "SkiMCP — MCP Tool Manifest Risk Scanner: scan MCP server tool definitions for security risks",
+  "description": "MCP server / CLI tool",
+  "main": "./dist/index.js",
+  "bin": {
+    "skimcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
   "workspaces": [
     "backend",
     "frontend"
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
-    "build": "npm run harvest && npm run build -w frontend && npm run build -w backend",
+    "build": "npm run harvest && npm run build -w frontend && npm run build -w backend && cp -r backend/dist ./dist && chmod +x ./dist/index.js ./dist/cli.js",
     "harvest": "tsx scripts/harvest-directory.ts",
     "start": "npm run start -w backend",
     "test": "npm run test -w backend",
@@ -17,6 +24,11 @@
     "deploy:vercel": "vercel",
     "docker:build": "docker build -t skimcp .",
     "docker:run": "docker run --rm -p 8080:8080 skimcp"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
