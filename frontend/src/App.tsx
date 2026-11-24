@@ -249,6 +249,7 @@ export default function App() {
             onScanResourcesAndPromptsChange={setScanResourcesAndPrompts}
             runCanaryProbes={runCanaryProbes}
             onRunCanaryProbesChange={setRunCanaryProbes}
+            onExploreDirectory={() => setActiveView('directory')}
             onScan={() => handleScan()}
             scanning={scanning}
           />

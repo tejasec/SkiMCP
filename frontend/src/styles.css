@@ -816,6 +816,40 @@ body {
   gap: 0.5rem;
 }
 
+/* ── Drag & Drop Zone ────────────────────────────────────────────── */
+
+.manifest-dropzone {
+  position: relative;
+  width: 100%;
+}
+
+.manifest-dropzone.dropzone-active .manifest-textarea {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(193, 95, 60, 0.25);
+  opacity: 0.35;
+}
+
+.dropzone-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(193, 95, 60, 0.08);
+  border: 2px dashed var(--accent);
+  border-radius: var(--shape-control);
+  z-index: 10;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
 .manifest-textarea {
   width: 100%;
   background: var(--bg);
@@ -1141,6 +1175,316 @@ body {
   box-shadow: 0 1px 4px rgba(193, 95, 60, 0.15);
 }
 
+/* ── Input Guidance Drawer ───────────────────────────────────────── */
+
+.guidance-drawer-container {
+  margin: 0.75rem 0 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--shape-control);
+  background: var(--surface);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.guidance-drawer-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.9rem;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.guidance-drawer-toggle:hover {
+  background: var(--surface-hover);
+}
+
+.guidance-toggle-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.guidance-toggle-sub {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.guidance-toggle-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.guidance-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--shape-chip);
+  background: rgba(193, 95, 60, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(193, 95, 60, 0.25);
+}
+
+.guidance-drawer-body {
+  border-top: 1px solid var(--border);
+  padding: 0.85rem 1rem 1rem;
+  background: var(--bg);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.guidance-mode-selector {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.guidance-subtab-btn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: var(--shape-chip);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.guidance-subtab-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.guidance-subtab-btn.active {
+  background: var(--surface-hover);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.guidance-platform-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.guidance-chip-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  border-radius: var(--shape-chip);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.guidance-chip-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.guidance-chip-btn.active {
+  background: rgba(193, 95, 60, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.guidance-detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-control);
+  padding: 0.75rem;
+}
+
+.guidance-field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.35rem;
+}
+
+.guidance-path-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-control);
+  padding: 0.45rem 0.65rem;
+  margin-bottom: 0.6rem;
+}
+
+.guidance-path-box code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.btn-copy-path {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--shape-chip);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.btn-copy-path:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.guidance-tip-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.guidance-tip-label {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.guidance-cmd-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-chip);
+  padding: 0.15rem 0.45rem;
+}
+
+.guidance-cmd-box code {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.btn-copy-sm {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  padding: 0.1rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-copy-sm:hover {
+  color: var(--accent);
+}
+
+.guidance-note {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin: 0.4rem 0 0.6rem;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.guidance-actions-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.guidance-url-guide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.guidance-url-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-control);
+  padding: 0.75rem;
+}
+
+.guidance-url-item h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+}
+
+.guidance-url-item p {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.guidance-url-item code {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  background: var(--bg);
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--shape-chip);
+  border: 1px solid var(--border);
+}
+
+/* ── Grouped Showcase Fixtures ────────────────────────────────────── */
+
+.example-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.85rem;
+}
+
+.fixture-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.fixture-group-title {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  min-width: 110px;
+}
+
 .example-buttons-row {
   display: flex;
   flex-wrap: wrap;
@@ -1155,7 +1499,7 @@ body {
   font-weight: 500;
 }
 
-/* ── Live URL Input ──────────────────────────────────────────────── */
+/* ── Live URL Input & Quick Fill ─────────────────────────────────── */
 
 .url-input-container {
   padding: 1.25rem 0 0.5rem;
@@ -1172,6 +1516,53 @@ body {
   padding: 0.15rem 0.35rem;
   border-radius: var(--shape-chip);
   font-family: var(--mono);
+}
+
+.sample-urls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.85rem;
+}
+
+.sample-urls-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.btn-sample-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--shape-chip);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-sample-chip:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-sample-directory {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.35);
+  color: var(--low);
+}
+
+.btn-sample-directory:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: var(--low);
+  color: var(--low);
 }
 
 .url-field-wrap {

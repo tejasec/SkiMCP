@@ -43,6 +43,10 @@ import {
   CornerDownLeft,
   CornerDownRight,
   ArrowRight,
+  CircleHelp,
+  Info,
+  Upload,
+  Sparkles,
   type LucideProps,
 } from 'lucide-react';
 
@@ -90,7 +94,11 @@ export type IconName =
   | 'external-link'
   | 'corner-down-left'
   | 'sub-item'
-  | 'arrow-right';
+  | 'arrow-right'
+  | 'help-circle'
+  | 'info'
+  | 'upload'
+  | 'sparkles';
 
 const ICON_REGISTRY: Record<IconName, React.ComponentType<LucideProps>> = {
   'shield': ShieldCheck,
@@ -137,6 +145,10 @@ const ICON_REGISTRY: Record<IconName, React.ComponentType<LucideProps>> = {
   'corner-down-left': CornerDownLeft,
   'sub-item': CornerDownRight,
   'arrow-right': ArrowRight,
+  'help-circle': CircleHelp,
+  'info': Info,
+  'upload': Upload,
+  'sparkles': Sparkles,
 };
 
 export interface IconProps extends Omit<LucideProps, 'ref'> {
