@@ -4,10 +4,12 @@ import {
   MCP_CLIENTS,
   INITIAL_CLIENT_COUNT,
   CLIENT_STEP_SIZE,
-  getClientsForTab,
+  filterClients,
+  filterPathsByOs,
   normalizeConfigPaths,
   getShowMoreLabel,
   type McpClientTab,
+  type McpClientOs,
 } from '../data/mcpClients';
 
 interface InputGuidanceDrawerProps {
@@ -25,6 +27,13 @@ const TAB_CONFIG: Array<{ id: McpClientTab; label: string }> = [
   { id: 'cli', label: 'CLI / Terminal' },
 ];
 
+const OS_FILTER_CONFIG: Array<{ id: McpClientOs; label: string }> = [
+  { id: 'all', label: 'All OS' },
+  { id: 'windows', label: 'Windows' },
+  { id: 'linux', label: 'Linux' },
+  { id: 'macos', label: 'macOS' },
+];
+
 export default function InputGuidanceDrawer({
   onSelectExampleConfig,
   onExploreDirectory,
@@ -33,6 +42,8 @@ export default function InputGuidanceDrawer({
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState<GuidanceCategory>('configs');
   const [activeTab, setActiveTab] = useState<McpClientTab>('all');
+  const [osFilter, setOsFilter] = useState<McpClientOs>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [visibleCounts, setVisibleCounts] = useState<Record<McpClientTab, number>>({
     all: INITIAL_CLIENT_COUNT,
     desktop: INITIAL_CLIENT_COUNT,
@@ -48,7 +59,7 @@ export default function InputGuidanceDrawer({
     cli: MCP_CLIENTS.filter((c) => c.category === 'cli').length,
   };
 
-  const clientsForTab = getClientsForTab(activeTab);
+  const clientsForTab = filterClients(activeTab, osFilter, searchQuery);
   const currentVisible = Math.min(
     visibleCounts[activeTab] ?? INITIAL_CLIENT_COUNT,
     clientsForTab.length,
@@ -129,24 +140,66 @@ export default function InputGuidanceDrawer({
 
           {category === 'configs' ? (
             <div className="guidance-content">
-              <div
-                className="client-category-tabs"
-                role="tablist"
-                aria-label="MCP client categories"
-              >
-                {TAB_CONFIG.map((tab) => (
+              <div className="client-tabs-toolbar">
+                <div
+                  className="client-category-tabs"
+                  role="tablist"
+                  aria-label="MCP client categories"
+                >
+                  {TAB_CONFIG.map((tab) => (
+                    <button
+                      key={tab.id}
+                      id={`client-tab-${tab.id}`}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeTab === tab.id}
+                      aria-controls="client-tabpanel"
+                      className={`client-category-tab ${activeTab === tab.id ? 'active' : ''}`}
+                      onClick={() => setActiveTab(tab.id)}
+                    >
+                      <span>{tab.label}</span>
+                      <span className="client-tab-count">{tabCounts[tab.id]}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="client-search-wrap">
+                  <span className="client-search-icon">
+                    <Icon name="search" size={13} />
+                  </span>
+                  <input
+                    type="text"
+                    className="client-search-input"
+                    placeholder="Search client, path, or format..."
+                    aria-label="Search MCP clients and config paths"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      className="client-search-clear"
+                      onClick={() => setSearchQuery('')}
+                      aria-label="Clear client search"
+                      title="Clear search"
+                    >
+                      <Icon name="close" size={12} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="client-os-filter-row" aria-label="Filter by operating system">
+                <span className="client-os-filter-label">OS Filter:</span>
+                {OS_FILTER_CONFIG.map((osItem) => (
                   <button
-                    key={tab.id}
-                    id={`client-tab-${tab.id}`}
+                    key={osItem.id}
                     type="button"
-                    role="tab"
-                    aria-selected={activeTab === tab.id}
-                    aria-controls="client-tabpanel"
-                    className={`client-category-tab ${activeTab === tab.id ? 'active' : ''}`}
-                    onClick={() => setActiveTab(tab.id)}
+                    className={`client-os-filter-btn ${osFilter === osItem.id ? 'active' : ''}`}
+                    onClick={() => setOsFilter(osItem.id)}
+                    aria-pressed={osFilter === osItem.id}
                   >
-                    <span>{tab.label}</span>
-                    <span className="client-tab-count">{tabCounts[tab.id]}</span>
+                    {osItem.label}
                   </button>
                 ))}
               </div>
@@ -157,140 +210,161 @@ export default function InputGuidanceDrawer({
                 aria-labelledby={`client-tab-${activeTab}`}
                 className="client-list-panel"
               >
-                <div className="client-cards-list">
-                  {visibleClients.map((client) => {
-                    const globalEntries = normalizeConfigPaths(client.globalPath);
-                    const projectEntries = client.projectPath
-                      ? normalizeConfigPaths(client.projectPath)
-                      : [];
+                {visibleClients.length === 0 ? (
+                  <div className="client-empty-state">
+                    <p>No MCP clients match your search or OS filter.</p>
+                    <button
+                      type="button"
+                      className="btn-sm btn-outline"
+                      onClick={() => {
+                        setSearchQuery('');
+                        setOsFilter('all');
+                      }}
+                    >
+                      Reset Filters
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="client-cards-list">
+                      {visibleClients.map((client) => {
+                        const globalEntries = filterPathsByOs(
+                          normalizeConfigPaths(client.globalPath),
+                          osFilter,
+                        );
+                        const projectEntries = client.projectPath
+                          ? normalizeConfigPaths(client.projectPath)
+                          : [];
 
-                    return (
-                      <div key={client.id} className="client-config-row">
-                        <div className="client-row-header">
-                          <span className="client-row-name">{client.name}</span>
-                          <div className="client-row-meta">
-                            <span
-                              className={`client-format-pill format-${client.format.toLowerCase().replace(/[^a-z0-9]/g, '')}`}
-                            >
-                              {client.format}
-                            </span>
-                            <code
-                              className="client-rootkey-badge"
-                              title={`Config root key: ${client.rootKey}`}
-                            >
-                              {client.rootKey}
-                            </code>
-                          </div>
-                        </div>
-
-                        <div className="client-paths-block">
-                          <div className="client-path-group">
-                            <span className="client-path-scope">Global</span>
-                            <div className="client-path-items">
-                              {globalEntries.map((entry, idx) => {
-                                const copyId = `${client.id}-global-${idx}`;
-                                return (
-                                  <div key={copyId} className="client-path-line">
-                                    {entry.label && (
-                                      <span className="client-os-tag">{entry.label}</span>
-                                    )}
-                                    <code className="client-path-code">{entry.path}</code>
-                                    {entry.copyable && (
-                                      <button
-                                        type="button"
-                                        className={`btn-copy-path-compact ${copiedKey === copyId ? 'is-copied' : ''}`}
-                                        onClick={() => handleCopy(entry.path, copyId)}
-                                        title={`Copy ${entry.path}`}
-                                        aria-label={`Copy global config path for ${client.name}`}
-                                      >
-                                        {copiedKey === copyId ? (
-                                          <>
-                                            <Icon name="check" size={12} /> Copied
-                                          </>
-                                        ) : (
-                                          <>
-                                            <Icon name="copy" size={12} /> Copy
-                                          </>
-                                        )}
-                                      </button>
-                                    )}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-
-                          {projectEntries.length > 0 && (
-                            <div className="client-path-group">
-                              <span className="client-path-scope client-scope-project">
-                                Project
-                              </span>
-                              <div className="client-path-items">
-                                {projectEntries.map((entry, idx) => {
-                                  const copyId = `${client.id}-project-${idx}`;
-                                  return (
-                                    <div key={copyId} className="client-path-line">
-                                      {entry.label && (
-                                        <span className="client-os-tag">{entry.label}</span>
-                                      )}
-                                      <code className="client-path-code">{entry.path}</code>
-                                      {entry.copyable && (
-                                        <button
-                                          type="button"
-                                          className={`btn-copy-path-compact ${copiedKey === copyId ? 'is-copied' : ''}`}
-                                          onClick={() => handleCopy(entry.path, copyId)}
-                                          title={`Copy ${entry.path}`}
-                                          aria-label={`Copy project config path for ${client.name}`}
-                                        >
-                                          {copiedKey === copyId ? (
-                                            <>
-                                              <Icon name="check" size={12} /> Copied
-                                            </>
-                                          ) : (
-                                            <>
-                                              <Icon name="copy" size={12} /> Copy
-                                            </>
-                                          )}
-                                        </button>
-                                      )}
-                                    </div>
-                                  );
-                                })}
+                        return (
+                          <div key={client.id} className="client-config-row">
+                            <div className="client-row-header">
+                              <span className="client-row-name">{client.name}</span>
+                              <div className="client-row-meta">
+                                <span
+                                  className={`client-format-pill format-${client.format.toLowerCase().replace(/[^a-z0-9]/g, '')}`}
+                                >
+                                  {client.format}
+                                </span>
+                                <code
+                                  className="client-rootkey-badge"
+                                  title={`Config root key: ${client.rootKey}`}
+                                >
+                                  {client.rootKey}
+                                </code>
                               </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
 
-                <div className="client-pagination-bar">
-                  <span className="client-pagination-status">
-                    Showing {visibleClients.length} of {clientsForTab.length}
-                  </span>
-                  <div className="client-pagination-actions">
-                    {remaining > 0 && (
-                      <button
-                        type="button"
-                        className="btn-sm btn-outline guidance-show-more-btn"
-                        onClick={handleShowMore}
-                      >
-                        <Icon name="chevron-down" size={13} />{' '}
-                        {getShowMoreLabel(remaining, CLIENT_STEP_SIZE)}
-                      </button>
-                    )}
-                    {currentVisible > INITIAL_CLIENT_COUNT && (
-                      <button
-                        type="button"
-                        className="btn-sm btn-text guidance-show-less-btn"
-                        onClick={handleShowLess}
-                      >
-                        <Icon name="chevron-up" size={13} /> Show less
-                      </button>
-                    )}
-                  </div>
-                </div>
+                            <div className="client-paths-block">
+                              <div className="client-path-group">
+                                <span className="client-path-scope">Global</span>
+                                <div className="client-path-items">
+                                  {globalEntries.map((entry, idx) => {
+                                    const copyId = `${client.id}-global-${idx}`;
+                                    return (
+                                      <div key={copyId} className="client-path-line">
+                                        {entry.label && (
+                                          <span className="client-os-tag">{entry.label}</span>
+                                        )}
+                                        <code className="client-path-code">{entry.path}</code>
+                                        {entry.copyable && (
+                                          <button
+                                            type="button"
+                                            className={`btn-copy-path-compact ${copiedKey === copyId ? 'is-copied' : ''}`}
+                                            onClick={() => handleCopy(entry.path, copyId)}
+                                            title={`Copy ${entry.path}`}
+                                            aria-label={`Copy global config path for ${client.name}`}
+                                          >
+                                            {copiedKey === copyId ? (
+                                              <>
+                                                <Icon name="check" size={12} /> Copied
+                                              </>
+                                            ) : (
+                                              <>
+                                                <Icon name="copy" size={12} /> Copy
+                                              </>
+                                            )}
+                                          </button>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+
+                              {projectEntries.length > 0 && (
+                                <div className="client-path-group">
+                                  <span className="client-path-scope client-scope-project">
+                                    Project
+                                  </span>
+                                  <div className="client-path-items">
+                                    {projectEntries.map((entry, idx) => {
+                                      const copyId = `${client.id}-project-${idx}`;
+                                      return (
+                                        <div key={copyId} className="client-path-line">
+                                          {entry.label && (
+                                            <span className="client-os-tag">{entry.label}</span>
+                                          )}
+                                          <code className="client-path-code">{entry.path}</code>
+                                          {entry.copyable && (
+                                            <button
+                                              type="button"
+                                              className={`btn-copy-path-compact ${copiedKey === copyId ? 'is-copied' : ''}`}
+                                              onClick={() => handleCopy(entry.path, copyId)}
+                                              title={`Copy ${entry.path}`}
+                                              aria-label={`Copy project config path for ${client.name}`}
+                                            >
+                                              {copiedKey === copyId ? (
+                                                <>
+                                                  <Icon name="check" size={12} /> Copied
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <Icon name="copy" size={12} /> Copy
+                                                </>
+                                              )}
+                                            </button>
+                                          )}
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="client-pagination-bar">
+                      <span className="client-pagination-status">
+                        Showing {visibleClients.length} of {clientsForTab.length}
+                      </span>
+                      <div className="client-pagination-actions">
+                        {remaining > 0 && (
+                          <button
+                            type="button"
+                            className="btn-sm btn-outline guidance-show-more-btn"
+                            onClick={handleShowMore}
+                          >
+                            <Icon name="chevron-down" size={13} />{' '}
+                            {getShowMoreLabel(remaining, CLIENT_STEP_SIZE)}
+                          </button>
+                        )}
+                        {currentVisible > INITIAL_CLIENT_COUNT && (
+                          <button
+                            type="button"
+                            className="btn-sm btn-text guidance-show-less-btn"
+                            onClick={handleShowLess}
+                          >
+                            <Icon name="chevron-up" size={13} /> Show less
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               {onSelectExampleConfig && (

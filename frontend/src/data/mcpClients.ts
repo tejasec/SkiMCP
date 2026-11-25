@@ -2,6 +2,8 @@ export type McpClientCategory = 'desktop' | 'ide' | 'cli';
 
 export type McpClientTab = 'all' | McpClientCategory;
 
+export type McpClientOs = 'all' | 'windows' | 'linux' | 'macos';
+
 export type McpConfigFormat = 'JSON' | 'JSON5' | 'YAML' | 'TOML' | 'YAML/JSON';
 
 export interface McpConfigPath {
@@ -19,22 +21,14 @@ export interface McpClientEntry {
   format: McpConfigFormat;
   rootKey: string;
   priority: number;
+  supportedOs?: Array<'windows' | 'linux' | 'macos'>;
 }
 
 export const INITIAL_CLIENT_COUNT = 4;
 export const CLIENT_STEP_SIZE = 4;
 
 export const MCP_CLIENTS: McpClientEntry[] = [
-  // ── Desktop Clients (desktop) ───────────────────────────────────────
-  {
-    id: 'claude-desktop-macos',
-    name: 'Claude Desktop (macOS)',
-    category: 'desktop',
-    globalPath: '~/Library/Application Support/Claude/claude_desktop_config.json',
-    format: 'JSON',
-    rootKey: 'mcpServers',
-    priority: 1,
-  },
+  // ── Desktop Clients (desktop) — Ordered Windows, Linux, macOS ───────
   {
     id: 'claude-desktop-windows',
     name: 'Claude Desktop (Windows)',
@@ -42,7 +36,8 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     globalPath: '%APPDATA%\\Claude\\claude_desktop_config.json',
     format: 'JSON',
     rootKey: 'mcpServers',
-    priority: 2,
+    priority: 1,
+    supportedOs: ['windows'],
   },
   {
     id: 'claude-desktop-linux',
@@ -51,7 +46,18 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     globalPath: '~/.config/Claude/claude_desktop_config.json',
     format: 'JSON',
     rootKey: 'mcpServers',
+    priority: 2,
+    supportedOs: ['linux'],
+  },
+  {
+    id: 'claude-desktop-macos',
+    name: 'Claude Desktop (macOS)',
+    category: 'desktop',
+    globalPath: '~/Library/Application Support/Claude/claude_desktop_config.json',
+    format: 'JSON',
+    rootKey: 'mcpServers',
     priority: 3,
+    supportedOs: ['macos'],
   },
   {
     id: 'lm-studio',
@@ -67,8 +73,8 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     name: 'Devin Desktop (Windsurf Next)',
     category: 'desktop',
     globalPath: [
-      { label: 'macOS/Linux', path: '~/.config/devin/mcp_config.json' },
       { label: 'Win', path: '%APPDATA%\\devin\\mcp_config.json' },
+      { label: 'Linux/macOS', path: '~/.config/devin/mcp_config.json' },
     ],
     format: 'JSON',
     rootKey: 'mcpServers',
@@ -91,9 +97,9 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     name: 'VS Code (Copilot)',
     category: 'ide',
     globalPath: [
-      { label: 'macOS', path: '~/Library/Application Support/Code/User/mcp.json' },
       { label: 'Win', path: '%APPDATA%\\Code\\User\\mcp.json' },
       { label: 'Linux', path: '~/.config/Code/User/mcp.json' },
+      { label: 'macOS', path: '~/Library/Application Support/Code/User/mcp.json' },
     ],
     projectPath: [
       { path: '.vscode/mcp.json' },
@@ -140,8 +146,8 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     name: 'Zed',
     category: 'ide',
     globalPath: [
-      { label: 'macOS/Linux', path: '~/.config/zed/settings.json' },
       { label: 'Win', path: '%APPDATA%\\Zed\\settings.json' },
+      { label: 'Linux/macOS', path: '~/.config/zed/settings.json' },
     ],
     format: 'JSON',
     rootKey: 'context_servers',
@@ -270,8 +276,8 @@ export const MCP_CLIENTS: McpClientEntry[] = [
     name: 'Goose (Block)',
     category: 'cli',
     globalPath: [
-      { label: 'macOS/Linux', path: '~/.config/goose/config.yaml' },
       { label: 'Win', path: '%APPDATA%\\Block\\goose\\config' },
+      { label: 'Linux/macOS', path: '~/.config/goose/config.yaml' },
     ],
     format: 'YAML',
     rootKey: 'extensions',
@@ -377,6 +383,69 @@ export function normalizeConfigPaths(
     ...item,
     copyable: item.copyable !== false,
   }));
+}
+
+function pathMatchesOs(label: string | undefined, osFilter: McpClientOs): boolean {
+  if (osFilter === 'all' || !label) return true;
+  const lower = label.toLowerCase();
+  const isOsTagged =
+    lower.includes('win') || lower.includes('linux') || lower.includes('macos');
+  if (!isOsTagged) return true;
+
+  if (osFilter === 'windows') return lower.includes('win');
+  if (osFilter === 'linux') return lower.includes('linux');
+  return lower.includes('macos');
+}
+
+export function filterPathsByOs(
+  paths: McpConfigPath[],
+  osFilter: McpClientOs,
+): McpConfigPath[] {
+  if (osFilter === 'all') return paths;
+  const matched = paths.filter((entry) => pathMatchesOs(entry.label, osFilter));
+  return matched.length > 0 ? matched : paths;
+}
+
+export function filterClients(
+  tab: McpClientTab,
+  osFilter: McpClientOs = 'all',
+  searchQuery: string = '',
+): McpClientEntry[] {
+  const base = getClientsForTab(tab);
+  const q = searchQuery.trim().toLowerCase();
+
+  return base.filter((client) => {
+    if (
+      osFilter !== 'all' &&
+      client.supportedOs &&
+      !client.supportedOs.includes(osFilter)
+    ) {
+      return false;
+    }
+
+    if (!q) return true;
+
+    const globalPaths = normalizeConfigPaths(client.globalPath);
+    const projectPaths = client.projectPath
+      ? normalizeConfigPaths(client.projectPath)
+      : [];
+
+    return (
+      client.name.toLowerCase().includes(q) ||
+      client.format.toLowerCase().includes(q) ||
+      client.rootKey.toLowerCase().includes(q) ||
+      globalPaths.some(
+        (p) =>
+          p.path.toLowerCase().includes(q) ||
+          (p.label && p.label.toLowerCase().includes(q)),
+      ) ||
+      projectPaths.some(
+        (p) =>
+          p.path.toLowerCase().includes(q) ||
+          (p.label && p.label.toLowerCase().includes(q)),
+      )
+    );
+  });
 }
 
 export function getShowMoreLabel(
