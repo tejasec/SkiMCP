@@ -47,6 +47,7 @@ import {
   Info,
   Upload,
   Sparkles,
+  Code2,
   type LucideProps,
 } from 'lucide-react';
 
@@ -98,7 +99,8 @@ export type IconName =
   | 'help-circle'
   | 'info'
   | 'upload'
-  | 'sparkles';
+  | 'sparkles'
+  | 'code';
 
 const ICON_REGISTRY: Record<IconName, React.ComponentType<LucideProps>> = {
   'shield': ShieldCheck,
@@ -149,6 +151,7 @@ const ICON_REGISTRY: Record<IconName, React.ComponentType<LucideProps>> = {
   'info': Info,
   'upload': Upload,
   'sparkles': Sparkles,
+  'code': Code2,
 };
 
 export interface IconProps extends Omit<LucideProps, 'ref'> {

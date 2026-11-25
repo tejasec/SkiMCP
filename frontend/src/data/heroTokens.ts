@@ -7,7 +7,8 @@ export type TokenCategory =
   | 'Format Ingestion'
   | 'Platform Config'
   | 'Network Handshake'
-  | 'Drift Analysis';
+  | 'Drift Analysis'
+  | 'CLI Distribution';
 
 export interface TokenActionPayload {
   manifest?: string;
@@ -32,7 +33,7 @@ export interface HeroToken {
   snippetLanguage: 'bash' | 'json' | 'yaml' | 'jsonl';
   docsUrl: string;
   actionText: string;
-  actionType: 'load_preset' | 'switch_view' | 'url_mode';
+  actionType: 'load_preset' | 'switch_view' | 'url_mode' | 'open_url';
   actionPayload?: TokenActionPayload;
 }
 
@@ -443,5 +444,32 @@ Net Risk Delta: +35 ESCALATED (HIGH RISK)`,
     actionText: 'Open Diff & Drift View',
     actionType: 'switch_view',
     actionPayload: { view: 'diff' },
+  },
+  {
+    id: 'install-cli',
+    label: 'Install CLI Tool',
+    className: 'tok-cli',
+    category: 'CLI Distribution',
+    glyph: 'CLI',
+    iconName: 'terminal',
+    peekDescription:
+      'Install SkiMCP globally or run zero-install security audits directly from your terminal or CI.',
+    peekArtifact: 'npm install -g skimcp  |  npx skimcp scan ./manifest.json',
+    fullDescription:
+      'Run deterministic, offline-capable MCP security audits from your terminal or CI/CD pipeline. Supports JSON, YAML, JSONL, desktop host configs, live SSE/HTTP endpoints, hardening, and permission drift diffing.',
+    cliCommand: 'npm install -g skimcp',
+    codeSnippet: `# Install globally via npm
+npm install -g skimcp
+
+# Audit local config & fail CI on high/critical findings
+skimcp scan ./claude_desktop_config.json --fail-on=high
+
+# Or run zero-install via npx
+npx skimcp diff ./v1.json ./v2.json`,
+    snippetLanguage: 'bash',
+    docsUrl: 'https://github.com/tejasec/SkiMCP#cli',
+    actionText: 'View CLI Docs on GitHub',
+    actionType: 'open_url',
+    actionPayload: { url: 'https://github.com/tejasec/SkiMCP#cli' },
   },
 ];

@@ -290,6 +290,17 @@ export default function App() {
           Deterministic rule-based scanner · Cryptographic SHA-256 fingerprints ·
           Permission Diff & Drift · One-Click Hardening · No data stored · No LLM calls
         </p>
+        <p className="footer-source-row">
+          <a
+            href="https://github.com/tejasec/SkiMCP"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-github-link"
+          >
+            <Icon name="code" size={13} /> Source Code on GitHub (tejasec/SkiMCP){' '}
+            <Icon name="external-link" size={12} />
+          </a>
+        </p>
       </footer>
     </main>
   </>

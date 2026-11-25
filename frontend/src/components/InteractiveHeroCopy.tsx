@@ -233,6 +233,11 @@ export default function InteractiveHeroCopy({
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    } else if (
+      token.actionType === 'open_url' &&
+      token.actionPayload?.url
+    ) {
+      window.open(token.actionPayload.url, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -285,6 +290,11 @@ export default function InteractiveHeroCopy({
         {renderTokenButton('live-sse')}, and{' '}
         {renderTokenButton('permission-diff')}.
       </p>
+
+      <div className="hero-cli-callout">
+        {renderTokenButton('install-cli')}
+        <span className="hero-cli-hint">npm install -g skimcp</span>
+      </div>
 
       {/* Stage 1: Peek Tooltip (Non-blocking, hover-intent ~150ms) */}
       {activePeekToken && peekLayout && (
@@ -432,7 +442,15 @@ export default function InteractiveHeroCopy({
               className="tok-action-btn"
               onClick={() => handleExecuteAction(activePinnedToken)}
             >
-              <Icon name="terminal" size={14} /> {activePinnedToken.actionText}
+              <Icon
+                name={
+                  activePinnedToken.actionType === 'open_url'
+                    ? 'external-link'
+                    : 'terminal'
+                }
+                size={14}
+              />{' '}
+              {activePinnedToken.actionText}
             </button>
             <span className="tok-footer-hint">
               Press <kbd>Esc</kbd> to close
