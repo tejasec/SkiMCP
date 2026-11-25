@@ -489,7 +489,7 @@ export default function ManifestInput({
 
       <div className="input-actions">
         {scanMode === 'manifest' && (
-          <>
+          <div className="upload-actions-group">
             <input
               ref={fileRef}
               type="file"
@@ -504,7 +504,10 @@ export default function ManifestInput({
             >
               <Icon name="upload" size={13} /> Upload Manifest File
             </button>
-          </>
+            <span className="upload-drag-hint">
+              or drag &amp; drop a file onto the editor above
+            </span>
+          </div>
         )}
         <button
           type="button"
