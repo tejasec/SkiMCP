@@ -297,8 +297,7 @@ export default function App() {
             rel="noopener noreferrer"
             className="footer-github-link"
           >
-            <Icon name="code" size={13} /> Source Code on GitHub (tejasec/SkiMCP){' '}
-            <Icon name="external-link" size={12} />
+            GitHub
           </a>
         </p>
       </footer>

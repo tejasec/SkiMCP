@@ -288,13 +288,9 @@ export default function InteractiveHeroCopy({
         {renderTokenButton('format-jsonl')},{' '}
         {renderTokenButton('desktop-config')},{' '}
         {renderTokenButton('live-sse')}, and{' '}
-        {renderTokenButton('permission-diff')}.
-      </p>
-
-      <div className="hero-cli-callout">
+        {renderTokenButton('permission-diff')}.{' '}
         {renderTokenButton('install-cli')}
-        <span className="hero-cli-hint">npm install -g skimcp</span>
-      </div>
+      </p>
 
       {/* Stage 1: Peek Tooltip (Non-blocking, hover-intent ~150ms) */}
       {activePeekToken && peekLayout && (
